@@ -1,0 +1,347 @@
+# 바이브 코딩 아키텍처 가이드
+
+## 목차
+1. [핵심 원칙](#핵심-원칙)
+2. [TDD (Test-Driven Development)](#tdd-test-driven-development)
+3. [SOLID 원칙](#solid-원칙)
+4. [클린 아키텍처](#클린-아키텍처)
+5. [마이크로서비스 아키텍처 (MSA)](#마이크로서비스-아키텍처-msa)
+6. [코딩 스타일 가이드](#코딩-스타일-가이드)
+7. [체크리스트](#체크리스트)
+
+---
+## 기술 스택
+- **프론트엔드**: React 
+- **백엔드**: Spring Boot
+- **데이터베이스**: PostgreSQL
+- **테스팅**: Jest, junit
+- **CI/CD**: GitHub Actions
+- **모니터링**: Prometheus, Grafana
+
+## 핵심 원칙
+
+### DRY (Don't Repeat Yourself)
+- 동일한 로직을 여러 곳에 작성하지 말 것
+- 공통 기능은 유틸리티 함수나 모듈로 추출
+- 설정 값은 상수나 환경변수로 관리
+
+### KISS (Keep It Simple, Stupid)
+- 복잡한 해결책보다 단순한 해결책 선호
+- 과도한 추상화 지양
+- 읽기 쉬운 코드 작성
+
+### YAGNI (You Aren't Gonna Need It)
+- 현재 필요하지 않은 기능은 구현하지 말 것
+- 미래의 요구사항을 가정한 과도한 설계 지양
+- 필요할 때 확장 가능한 구조로 설계
+
+---
+
+## TDD (Test-Driven Development)
+
+### Red-Green-Refactor 사이클
+
+1. **Red**: 실패하는 테스트 작성
+2. **Green**: 테스트를 통과하는 최소한의 코드 작성
+3. **Refactor**: 코드 개선 및 중복 제거
+
+### TDD 체크포인트
+- [ ] 프로덕션 코드 작성 전 테스트 먼저 작성
+- [ ] 테스트는 하나의 기능에 집중
+- [ ] 테스트 이름은 의도를 명확히 표현
+- [ ] Given-When-Then 패턴 활용
+- [ ] 테스트 커버리지 80% 이상 유지
+
+### 테스트 작성 가이드
+```javascript
+// Good: 명확한 테스트 구조
+describe('UserService', () => {
+  describe('createUser', () => {
+    it('should create user with valid email', () => {
+      // Given
+      const userData = { email: 'test@example.com', name: 'John' };
+      
+      // When
+      const result = userService.createUser(userData);
+      
+      // Then
+      expect(result.id).toBeDefined();
+      expect(result.email).toBe('test@example.com');
+    });
+  });
+});
+```
+
+---
+
+## SOLID 원칙
+
+### S - Single Responsibility Principle (단일 책임 원칙)
+- 클래스는 하나의 책임만 가져야 함
+- 변경 이유가 하나여야 함
+
+```javascript
+// Bad
+class User {
+  saveToDatabase() { /* DB 로직 */ }
+  sendEmail() { /* 이메일 로직 */ }
+  validateData() { /* 검증 로직 */ }
+}
+
+// Good
+class User {
+  constructor(data) { this.data = data; }
+}
+class UserRepository {
+  save(user) { /* DB 로직 */ }
+}
+class EmailService {
+  send(user) { /* 이메일 로직 */ }
+}
+class UserValidator {
+  validate(userData) { /* 검증 로직 */ }
+}
+```
+
+### O - Open/Closed Principle (개방/폐쇄 원칙)
+- 확장에는 열려있고, 수정에는 닫혀있어야 함
+
+```javascript
+// Good: Strategy 패턴 활용
+class PaymentProcessor {
+  constructor(strategy) {
+    this.strategy = strategy;
+  }
+  
+  process(amount) {
+    return this.strategy.process(amount);
+  }
+}
+
+class CreditCardStrategy {
+  process(amount) { /* 신용카드 처리 */ }
+}
+
+class PayPalStrategy {
+  process(amount) { /* PayPal 처리 */ }
+}
+```
+
+### L - Liskov Substitution Principle (리스코프 치환 원칙)
+- 자식 클래스는 부모 클래스를 완전히 대체할 수 있어야 함
+
+### I - Interface Segregation Principle (인터페이스 분리 원칙)
+- 클라이언트는 사용하지 않는 인터페이스에 의존하면 안됨
+
+### D - Dependency Inversion Principle (의존성 역전 원칙)
+- 고수준 모듈은 저수준 모듈에 의존하면 안됨
+- 추상화에 의존해야 함
+
+```javascript
+// Good: 의존성 주입
+class OrderService {
+  constructor(paymentService, inventoryService) {
+    this.paymentService = paymentService;
+    this.inventoryService = inventoryService;
+  }
+  
+  processOrder(order) {
+    this.inventoryService.reserve(order.items);
+    this.paymentService.charge(order.amount);
+  }
+}
+```
+
+---
+
+## 클린 아키텍처
+
+### 계층 구조
+```
+┌─────────────────────┐
+│    Presentation     │ ← Controllers, Views
+├─────────────────────┤
+│     Application     │ ← Use Cases, Services
+├─────────────────────┤
+│      Domain         │ ← Entities, Business Rules
+├─────────────────────┤
+│   Infrastructure    │ ← Database, External APIs
+└─────────────────────┘
+```
+
+### 의존성 규칙
+- 내부 계층은 외부 계층을 알면 안됨
+- 의존성은 항상 안쪽을 향해야 함
+- 비즈니스 로직은 프레임워크나 DB에 독립적
+
+### 폴더 구조 예시
+```
+src/
+├── domain/
+│   ├── entities/
+│   ├── repositories/
+│   └── services/
+├── application/
+│   ├── use-cases/
+│   └── dto/
+├── infrastructure/
+│   ├── database/
+│   ├── external-apis/
+│   └── repositories/
+└── presentation/
+    ├── controllers/
+    └── middleware/
+```
+
+### 주요 패턴
+- **Repository Pattern**: 데이터 접근 로직 추상화
+- **Use Case Pattern**: 비즈니스 시나리오 캡슐화
+- **Dependency Injection**: 의존성 관리
+
+---
+
+## 마이크로서비스 아키텍처 (MSA)
+
+### 핵심 원칙
+- **단일 책임**: 각 서비스는 하나의 비즈니스 기능 담당
+- **자율성**: 독립적인 배포와 확장
+- **분산**: 네트워크를 통한 통신
+- **내결함성**: 다른 서비스 장애에 영향받지 않음
+
+### 서비스 분할 기준
+- 비즈니스 기능 단위
+- 데이터 일관성 경계
+- 팀 구조 (Conway's Law)
+- 기술 스택 요구사항
+
+### 통신 패턴
+
+#### 동기 통신
+```javascript
+// REST API 호출
+const userService = {
+  async getUser(id) {
+    const response = await fetch(`/api/users/${id}`);
+    return response.json();
+  }
+};
+```
+
+#### 비동기 통신
+```javascript
+// 이벤트 기반 통신
+const eventBus = {
+  publish(event, data) {
+    // 메시지 큐에 이벤트 발행
+  },
+  
+  subscribe(event, handler) {
+    // 이벤트 구독 및 핸들러 등록
+  }
+};
+```
+
+### MSA 고려사항
+- **분산 트랜잭션**: Saga 패턴 활용
+- **서비스 디스커버리**: 동적 서비스 찾기
+- **API Gateway**: 단일 진입점
+- **Circuit Breaker**: 장애 전파 방지
+- **모니터링**: 분산 추적, 로깅
+
+---
+
+## 코딩 스타일 가이드
+
+### 네이밍 컨벤션
+- **변수/함수**: camelCase
+- **클래스**: PascalCase
+- **상수**: UPPER_SNAKE_CASE
+- **파일명**: kebab-case
+
+### 함수 작성 가이드
+```javascript
+// Good: 작은, 단일 목적 함수
+function calculateTotalPrice(items) {
+  return items.reduce((total, item) => total + item.price, 0);
+}
+
+// Good: 순수 함수 선호
+function addTax(price, taxRate) {
+  return price * (1 + taxRate);
+}
+
+// Good: 명확한 함수명
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+```
+
+### 에러 처리
+```javascript
+// Good: 명시적 에러 처리
+async function fetchUserData(id) {
+  try {
+    const response = await userApi.getUser(id);
+    return { data: response.data, error: null };
+  } catch (error) {
+    logger.error('Failed to fetch user data', { id, error });
+    return { data: null, error: error.message };
+  }
+}
+```
+
+### 코멘트 가이드
+- **WHY** 설명 (WHAT이 아닌)
+- 복잡한 비즈니스 로직 설명
+- TODO, FIXME 태그 활용
+
+---
+
+## 체크리스트
+
+### 코드 작성 전
+- [ ] 요구사항 명확히 이해
+- [ ] 테스트 케이스 정의
+- [ ] 아키텍처 설계 검토
+- [ ] 의존성 분석
+
+### 코드 작성 중
+- [ ] TDD 사이클 준수
+- [ ] SOLID 원칙 적용
+- [ ] 적절한 추상화 수준 유지
+- [ ] 네이밍 컨벤션 준수
+
+### 코드 작성 후
+- [ ] 코드 리뷰 준비
+- [ ] 테스트 커버리지 확인
+- [ ] 성능 검토
+- [ ] 보안 취약점 점검
+- [ ] 문서화 업데이트
+
+### MSA 관련
+- [ ] 서비스 경계 명확화
+- [ ] API 계약 정의
+- [ ] 장애 시나리오 대응
+- [ ] 모니터링 구성
+- [ ] 배포 전략 수립
+
+---
+
+## 추가 리소스
+
+### 참고 도서
+- Clean Code (Robert C. Martin)
+- Clean Architecture (Robert C. Martin)
+- Microservices Patterns (Chris Richardson)
+- Building Microservices (Sam Newman)
+
+### 도구 추천
+- **테스팅**: Jest, Mocha, Cypress
+- **린팅**: ESLint, Prettier
+- **모니터링**: Prometheus, Grafana
+- **CI/CD**: Jenkins, GitHub Actions
+- **컨테이너**: Docker, Kubernetes
+
+---
+
+*이 가이드는 바이브 코딩 세션에서 지속적으로 참조하고 업데이트해야 합니다.*
