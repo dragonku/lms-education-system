@@ -34,7 +34,7 @@ jobs:
         cache: 'npm'
     
     - name: Install backend dependencies
-      run: npm ci
+      run: npm install
     
     - name: Run backend tests
       run: npm test
@@ -69,7 +69,7 @@ jobs:
     - name: Install frontend dependencies
       run: |
         cd frontend
-        npm ci
+        npm install
     
     - name: Run frontend tests
       run: |
