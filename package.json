@@ -4,7 +4,7 @@
   "description": "Learning Management System with Clean Architecture - Frontend Only for Vercel",
   "private": true,
   "scripts": {
-    "build": "cd frontend && npm ci && npm run build",
+    "build": "cd frontend && npm install && npm run build",
     "start": "cd frontend && npm start",
     "test": "cd frontend && npm test",
     "dev": "cd frontend && npm start"
