@@ -26,7 +26,8 @@ export class UserController {
         data: user
       });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(400).json({ error: message });
     }
   }
 
@@ -45,7 +46,8 @@ export class UserController {
         data: authResult
       });
     } catch (error) {
-      res.status(401).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(401).json({ error: message });
     }
   }
 
@@ -56,7 +58,8 @@ export class UserController {
         data: req.user
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 
@@ -66,7 +69,8 @@ export class UserController {
         message: 'Profile update functionality not implemented yet'
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 }

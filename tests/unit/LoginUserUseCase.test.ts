@@ -2,17 +2,25 @@ import { LoginUserUseCase } from '../../src/application/use-cases/user/LoginUser
 import { UserRepository } from '../../src/domain/repositories/UserRepository';
 import { User, UserType, UserStatus } from '../../src/domain/entities/User';
 import { LoginDTO } from '../../src/application/dto/UserDTO';
-import * as bcrypt from 'bcryptjs';
 
-jest.mock('bcryptjs');
-jest.mock('jsonwebtoken');
+jest.mock('bcryptjs', () => ({
+  compare: jest.fn(),
+}));
+
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn(() => 'mock-token'),
+}));
+
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 describe('LoginUserUseCase', () => {
   let loginUserUseCase: LoginUserUseCase;
   let mockUserRepository: jest.Mocked<UserRepository>;
-  const mockBcrypt = bcrypt as jest.Mocked<typeof bcrypt>;
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    
     mockUserRepository = {
       findById: jest.fn(),
       findByEmail: jest.fn(),
@@ -46,32 +54,35 @@ describe('LoginUserUseCase', () => {
         phoneNumber: '010-1234-5678',
         userType: UserType.STUDENT,
         status: UserStatus.ACTIVE,
+        companyId: undefined,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
       mockUserRepository.findByEmail.mockResolvedValue(user);
-      mockBcrypt.compare.mockResolvedValue(true);
+      bcrypt.compare.mockResolvedValue(true);
 
       // When
       const result = await loginUserUseCase.execute(loginData);
 
       // Then
       expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(loginData.email);
-      expect(mockBcrypt.compare).toHaveBeenCalledWith(loginData.password, user.password);
-      expect(result).toEqual(
-        expect.objectContaining({
-          user: expect.objectContaining({
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            userType: user.userType,
-            status: user.status,
-          }),
-          token: expect.any(String),
-          refreshToken: expect.any(String),
-        })
-      );
+      expect(bcrypt.compare).toHaveBeenCalledWith(loginData.password, user.password);
+      expect(result).toEqual({
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          phoneNumber: user.phoneNumber,
+          userType: user.userType,
+          status: user.status,
+          companyId: user.companyId,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+        token: 'mock-token',
+        refreshToken: 'mock-token',
+      });
     });
 
     it('should throw error when user not found', async () => {
@@ -87,7 +98,7 @@ describe('LoginUserUseCase', () => {
       await expect(loginUserUseCase.execute(loginData)).rejects.toThrow(
         'Invalid credentials'
       );
-      expect(mockBcrypt.compare).not.toHaveBeenCalled();
+      expect(bcrypt.compare).not.toHaveBeenCalled();
     });
 
     it('should throw error when password is invalid', async () => {
@@ -105,12 +116,13 @@ describe('LoginUserUseCase', () => {
         phoneNumber: '010-1234-5678',
         userType: UserType.STUDENT,
         status: UserStatus.ACTIVE,
+        companyId: undefined,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
       mockUserRepository.findByEmail.mockResolvedValue(user);
-      mockBcrypt.compare.mockResolvedValue(false);
+      bcrypt.compare.mockResolvedValue(false);
 
       // When & Then
       await expect(loginUserUseCase.execute(loginData)).rejects.toThrow(
@@ -143,7 +155,7 @@ describe('LoginUserUseCase', () => {
       await expect(loginUserUseCase.execute(loginData)).rejects.toThrow(
         'Account is not active. Please contact administrator.'
       );
-      expect(mockBcrypt.compare).not.toHaveBeenCalled();
+      expect(bcrypt.compare).not.toHaveBeenCalled();
     });
   });
 });
