@@ -1,12 +1,6 @@
 {
-  "framework": null,
-  "buildCommand": "cd frontend && npm install && CI=false npm run build",
+  "buildCommand": "cd frontend && npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "cd frontend && npm install --legacy-peer-deps",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "installCommand": "cd frontend && npm install",
+  "framework": "create-react-app"
 }
