@@ -74,6 +74,27 @@ const ErrorMessage = styled.div`
   margin-top: 0.5rem;
 `;
 
+const DemoInfo = styled.div`
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  
+  h4 {
+    color: #1976d2;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  code {
+    background: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+`;
+
 const LinkContainer = styled.div`
   text-align: center;
   margin-top: 1rem;
@@ -124,6 +145,13 @@ const Login: React.FC = () => {
   return (
     <LoginContainer>
       <Title>로그인</Title>
+      
+      <DemoInfo>
+        <h4>📍 데모 계정</h4>
+        <p>이메일: <code>demo@example.com</code></p>
+        <p>비밀번호: <code>demo123</code></p>
+      </DemoInfo>
+      
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="email">이메일</Label>

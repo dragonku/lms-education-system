@@ -28,6 +28,29 @@ const HeroSubtitle = styled.p`
   opacity: 0.9;
 `;
 
+const DemoNotice = styled.div`
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+`;
+
+const DemoTitle = styled.h3`
+  color: #f1c40f;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+`;
+
+const DemoCredentials = styled.div`
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+`;
+
 const CTAButton = styled(Link)`
   display: inline-block;
   background-color: #f39c12;
@@ -125,6 +148,20 @@ const Home: React.FC = () => {
         <HeroSubtitle>
           체계적이고 효율적인 교육 관리를 위한 통합 플랫폼
         </HeroSubtitle>
+        
+        <DemoNotice>
+          <DemoTitle>🚀 데모 시스템</DemoTitle>
+          <p>현재 프론트엔드 데모 버전입니다. 아래 정보로 로그인해보세요:</p>
+          <DemoCredentials>
+            <strong>로그인 정보:</strong><br />
+            이메일: demo@example.com<br />
+            비밀번호: demo123
+          </DemoCredentials>
+          <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
+            회원가입은 어떤 정보로도 가능하며, 강좌 정보는 샘플 데이터입니다.
+          </p>
+        </DemoNotice>
+        
         {!isAuthenticated ? (
           <CTAButton to="/register">지금 시작하기</CTAButton>
         ) : (
