@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout/Layout';
@@ -19,15 +19,6 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 function App() {
-  useEffect(() => {
-    // Handle SPA redirect for GitHub Pages / Vercel
-    const redirect = sessionStorage.redirect;
-    delete sessionStorage.redirect;
-    if (redirect && redirect !== window.location.href) {
-      history.replaceState(null, '', redirect);
-    }
-  }, []);
-
   return (
     <AuthProvider>
       <Router>
