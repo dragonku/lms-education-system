@@ -1,9 +1,6 @@
-# Backend files - exclude everything except frontend
-src/
-tests/
+# Backend and unused files
+frontend/
 dist/
-jest.config.js
-tsconfig.json
 start.sh
 stop.sh
 
@@ -12,8 +9,5 @@ stop.sh
 architecture_guide
 prd.md
 
-# Keep only essential files for frontend deployment
-!frontend/
-!_redirects
-!vercel.json
-!package.json
+# Config files not needed for frontend
+.github/
