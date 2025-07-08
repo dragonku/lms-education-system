@@ -210,21 +210,22 @@ const Courses: React.FC = () => {
   const { user } = useAuth();
   const coursesPerPage = 6;
 
-  const fetchCourses = async () => {
-    try {
-      setLoading(true);
-      const result = await courseApi.getCourses(currentPage, coursesPerPage);
-      setCourses(result.courses);
-      setTotalPages(Math.ceil(result.total / coursesPerPage));
-    } catch (err: any) {
-      setError('강좌 목록을 불러오는데 실패했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    fetchCourses();
+    const loadCourses = async () => {
+      try {
+        setLoading(true);
+        const result = await courseApi.getCourses(currentPage, coursesPerPage);
+        setCourses(result.courses);
+        setTotalPages(Math.ceil(result.total / coursesPerPage));
+      } catch (err: any) {
+        setError('강좌 목록을 불러오는데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourses();
   }, [currentPage]);
 
   const filteredCourses = courses.filter(course => {

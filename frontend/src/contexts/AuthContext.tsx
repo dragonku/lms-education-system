@@ -31,16 +31,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem('authToken');
-      const savedUser = localStorage.getItem('user');
-      
-      if (token && savedUser) {
-        try {
-          setUser(JSON.parse(savedUser));
-        } catch (error) {
-          console.error('Failed to parse saved user:', error);
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('user');
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('authToken');
+        const savedUser = localStorage.getItem('user');
+        
+        if (token && savedUser) {
+          try {
+            setUser(JSON.parse(savedUser));
+          } catch (error) {
+            console.error('Failed to parse saved user:', error);
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+          }
         }
       }
       setLoading(false);
@@ -53,8 +55,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const authResponse: AuthResponse = await authApi.login(credentials);
       
-      localStorage.setItem('authToken', authResponse.token);
-      localStorage.setItem('user', JSON.stringify(authResponse.user));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('authToken', authResponse.token);
+        localStorage.setItem('user', JSON.stringify(authResponse.user));
+      }
       setUser(authResponse.user);
     } catch (error) {
       throw error;
@@ -70,8 +74,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+    }
     setUser(null);
   };
 
