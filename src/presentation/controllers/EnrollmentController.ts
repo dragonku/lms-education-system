@@ -31,7 +31,8 @@ export class EnrollmentController {
         data: enrollment
       });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(400).json({ error: message });
     }
   }
 
@@ -51,7 +52,8 @@ export class EnrollmentController {
         data: enrollment
       });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(400).json({ error: message });
     }
   }
 
@@ -64,7 +66,8 @@ export class EnrollmentController {
         data: enrollments
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 
@@ -77,7 +80,8 @@ export class EnrollmentController {
         data: enrollments
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 
@@ -91,7 +95,8 @@ export class EnrollmentController {
         data: enrollments
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 }

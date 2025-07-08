@@ -110,7 +110,7 @@ export class PostgresCourseRepository implements CourseRepository {
     ]);
 
     return {
-      courses: coursesResult.rows.map(row => this.mapRowToCourse(row)),
+      courses: coursesResult.rows.map((row: any) => this.mapRowToCourse(row)),
       total: parseInt(countResult.rows[0].count)
     };
   }
@@ -120,7 +120,7 @@ export class PostgresCourseRepository implements CourseRepository {
       'SELECT * FROM courses WHERE title ILIKE $1',
       [`%${title}%`]
     );
-    return result.rows.map(row => this.mapRowToCourse(row));
+    return result.rows.map((row: any) => this.mapRowToCourse(row));
   }
 
   async findByInstructor(instructorId: string): Promise<Course[]> {
@@ -130,10 +130,27 @@ export class PostgresCourseRepository implements CourseRepository {
        WHERE cs.instructor_id = $1`,
       [instructorId]
     );
-    return result.rows.map(row => this.mapRowToCourse(row));
+    return result.rows.map((row: any) => this.mapRowToCourse(row));
   }
 
-  private mapRowToCourse(row: any): Course {
+  private mapRowToCourse(row: {
+    id: string;
+    title: string;
+    description: string;
+    objectives: string;
+    target_audience: string;
+    prerequisites: string;
+    duration: number;
+    max_students: number;
+    min_students: number;
+    course_type: string;
+    status: string;
+    category: string;
+    tags: string;
+    created_by: string;
+    created_at: Date;
+    updated_at: Date;
+  }): Course {
     return {
       id: row.id,
       title: row.title,
@@ -144,8 +161,8 @@ export class PostgresCourseRepository implements CourseRepository {
       duration: row.duration,
       maxStudents: row.max_students,
       minStudents: row.min_students,
-      courseType: row.course_type,
-      status: row.status,
+      courseType: row.course_type as CourseType,
+      status: row.status as CourseStatus,
       category: row.category,
       tags: JSON.parse(row.tags || '[]'),
       createdBy: row.created_by,

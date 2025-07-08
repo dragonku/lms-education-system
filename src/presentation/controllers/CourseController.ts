@@ -25,7 +25,8 @@ export class CourseController {
         data: course
       });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(400).json({ error: message });
     }
   }
 
@@ -46,7 +47,8 @@ export class CourseController {
         }
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 
@@ -65,7 +67,8 @@ export class CourseController {
         data: course
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 
@@ -86,7 +89,8 @@ export class CourseController {
         data: updatedCourse
       });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(400).json({ error: message });
     }
   }
 
@@ -105,7 +109,8 @@ export class CourseController {
         message: 'Course deleted successfully'
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+      res.status(500).json({ error: message });
     }
   }
 }
