@@ -1,0 +1,23 @@
+# Backend files
+src/
+tests/
+*.ts
+*.js
+!frontend/
+
+# Dependencies
+node_modules/
+
+# Documentation
+*.md
+!frontend/*.md
+
+# Config files
+jest.config.js
+tsconfig.json
+package.json
+!frontend/package.json
+
+# Environment files
+.env*
+!frontend/.env*
