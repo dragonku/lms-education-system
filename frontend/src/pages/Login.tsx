@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
-import { LoginForm } from '../types';
+import { LoginRequest } from '../types';
 
 const LoginContainer = styled.div`
   max-width: 400px;
@@ -88,8 +88,29 @@ const LinkContainer = styled.div`
   }
 `;
 
+const TestAccountsInfo = styled.div`
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  
+  h4 {
+    margin: 0 0 0.5rem 0;
+    color: #495057;
+  }
+  
+  code {
+    background: #e9ecef;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+`;
+
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<LoginForm>({
+  const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: '',
   });
@@ -113,9 +134,9 @@ const Login: React.FC = () => {
 
     try {
       await login(formData);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.error || '로그인에 실패했습니다.');
+      setError(err.response?.data?.message || '로그인에 실패했습니다.');
     } finally {
       setLoading(false);
     }
@@ -124,6 +145,15 @@ const Login: React.FC = () => {
   return (
     <LoginContainer>
       <Title>로그인</Title>
+      
+      <TestAccountsInfo>
+        <h4>💡 테스트 계정</h4>
+        <p>관리자: <code>admin@lms.com</code> / <code>admin123</code></p>
+        <p>재직자: <code>employee@test.com</code> / <code>test123</code></p>
+        <p>구직자: <code>jobseeker@test.com</code> / <code>test123</code></p>
+        <p>협약사: <code>company@test.com</code> / <code>test123</code></p>
+      </TestAccountsInfo>
+      
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="email">이메일</Label>
@@ -157,7 +187,7 @@ const Login: React.FC = () => {
       </Form>
       
       <LinkContainer>
-        <p>계정이 없으신가요? <Link to="/register">회원가입</Link></p>
+        <p>계정이 없으신가요? <Link to="/signup">회원가입</Link></p>
       </LinkContainer>
     </LoginContainer>
   );

@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, AuthResponse, LoginForm, RegisterForm } from '../types';
+import { User, LoginRequest, SignupRequest, AuthResponse } from '../types';
 import { authApi } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
-  login: (credentials: LoginForm) => Promise<void>;
-  register: (userData: RegisterForm) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<void>;
+  signup: (userData: SignupRequest) => Promise<string>;
   logout: () => void;
   loading: boolean;
   isAuthenticated: boolean;
@@ -31,18 +31,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('authToken');
-        const savedUser = localStorage.getItem('user');
-        
-        if (token && savedUser) {
-          try {
-            setUser(JSON.parse(savedUser));
-          } catch (error) {
-            console.error('Failed to parse saved user:', error);
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('user');
-          }
+      const token = localStorage.getItem('authToken');
+      const savedUser = localStorage.getItem('user');
+      
+      if (token && savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+          // Optionally verify token with backend
+          // const currentUser = await authApi.getCurrentUser();
+          // setUser(currentUser);
+        } catch (error) {
+          console.error('Failed to parse saved user:', error);
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
         }
       }
       setLoading(false);
@@ -51,40 +52,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (credentials: LoginForm) => {
+  const login = async (credentials: LoginRequest) => {
     try {
       const authResponse: AuthResponse = await authApi.login(credentials);
       
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('authToken', authResponse.token);
-        localStorage.setItem('user', JSON.stringify(authResponse.user));
-      }
+      localStorage.setItem('authToken', authResponse.token);
+      localStorage.setItem('user', JSON.stringify(authResponse.user));
       setUser(authResponse.user);
     } catch (error) {
       throw error;
     }
   };
 
-  const register = async (userData: RegisterForm) => {
+  const signup = async (userData: SignupRequest): Promise<string> => {
     try {
-      await authApi.register(userData);
+      const response = await authApi.signup(userData);
+      return response.message;
     } catch (error) {
       throw error;
     }
   };
 
   const logout = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('user');
-    }
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
     setUser(null);
   };
 
   const value: AuthContextType = {
     user,
     login,
-    register,
+    signup,
     logout,
     loading,
     isAuthenticated: !!user,

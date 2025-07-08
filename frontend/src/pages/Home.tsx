@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 
 const HomeContainer = styled.div`
   text-align: center;
-  padding: 2rem;
 `;
 
 const Hero = styled.section`
@@ -44,6 +43,15 @@ const CTAButton = styled(Link)`
   }
 `;
 
+const WelcomeMessage = styled.div`
+  background: #d5f4e6;
+  border: 1px solid #27ae60;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  color: #27ae60;
+`;
+
 const Features = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -70,42 +78,18 @@ const FeatureDescription = styled.p`
   line-height: 1.6;
 `;
 
-const Stats = styled.section`
-  background: #ecf0f1;
-  padding: 3rem 2rem;
+const ReleaseInfo = styled.div`
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
   border-radius: 8px;
-  margin: 3rem 0;
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-`;
-
-const StatItem = styled.div`
-  text-align: center;
-`;
-
-const StatNumber = styled.div`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #3498db;
-  margin-bottom: 0.5rem;
-`;
-
-const StatLabel = styled.div`
-  color: #7f8c8d;
-  font-weight: 500;
-`;
-
-const WelcomeMessage = styled.div`
-  background: #d5f4e6;
-  border: 1px solid #27ae60;
-  border-radius: 8px;
-  padding: 1rem;
+  padding: 1.5rem;
   margin-bottom: 2rem;
-  color: #27ae60;
+  text-align: left;
+`;
+
+const ReleaseTitle = styled.h3`
+  color: #1976d2;
+  margin-bottom: 0.5rem;
 `;
 
 const Home: React.FC = () => {
@@ -116,7 +100,7 @@ const Home: React.FC = () => {
       {isAuthenticated && (
         <WelcomeMessage>
           환영합니다, {user?.name}님! 
-          {user?.status === 'pending_approval' && ' (계정 승인 대기 중)'}
+          {user?.status === 'PENDING' && ' (관리자 승인 대기 중)'}
         </WelcomeMessage>
       )}
       
@@ -125,84 +109,50 @@ const Home: React.FC = () => {
         <HeroSubtitle>
           체계적이고 효율적인 교육 관리를 위한 통합 플랫폼
         </HeroSubtitle>
+        
         {!isAuthenticated ? (
-          <CTAButton to="/register">지금 시작하기</CTAButton>
+          <CTAButton to="/signup">지금 시작하기</CTAButton>
         ) : (
-          <CTAButton to="/courses">강좌 둘러보기</CTAButton>
+          <CTAButton to="/dashboard">대시보드로 이동</CTAButton>
         )}
       </Hero>
 
+      <ReleaseInfo>
+        <ReleaseTitle>🚀 Release 1 - 기본 설정 및 사용자 인증</ReleaseTitle>
+        <p>현재 Release 1이 구현되었습니다:</p>
+        <ul>
+          <li>✅ 사용자 회원가입 (재직자/구직자/협약사)</li>
+          <li>✅ JWT 기반 로그인/로그아웃</li>
+          <li>✅ 권한 기반 접근 제어</li>
+          <li>✅ Spring Boot 백엔드 + React 프론트엔드</li>
+        </ul>
+      </ReleaseInfo>
+
       <Features>
         <FeatureCard>
-          <FeatureTitle>🎓 다양한 교육과정</FeatureTitle>
+          <FeatureTitle>👤 사용자 관리</FeatureTitle>
           <FeatureDescription>
-            재직자 교육, 구직자 양성과정, 일반 교육 등 
-            다양한 유형의 교육과정을 제공합니다.
+            재직자, 구직자, 협약사별 차별화된 회원가입과 
+            관리자 승인 시스템을 제공합니다.
           </FeatureDescription>
         </FeatureCard>
         
         <FeatureCard>
-          <FeatureTitle>👥 체계적인 사용자 관리</FeatureTitle>
+          <FeatureTitle>🔐 보안 인증</FeatureTitle>
           <FeatureDescription>
-            관리자, 강사, 교육생, 기업 담당자별로 
-            차별화된 기능과 권한을 제공합니다.
+            JWT 토큰 기반의 안전한 인증 시스템과 
+            권한별 접근 제어를 구현했습니다.
           </FeatureDescription>
         </FeatureCard>
         
         <FeatureCard>
-          <FeatureTitle>📊 평가 및 진도 관리</FeatureTitle>
+          <FeatureTitle>🏗️ Clean Architecture</FeatureTitle>
           <FeatureDescription>
-            온라인 시험, 과제 제출, 출석 관리 등
-            체계적인 학습 평가 시스템을 제공합니다.
-          </FeatureDescription>
-        </FeatureCard>
-        
-        <FeatureCard>
-          <FeatureTitle>🏢 기업 맞춤 교육</FeatureTitle>
-          <FeatureDescription>
-            협약 기업을 위한 맞춤형 교육과정과
-            전담 관리 서비스를 제공합니다.
-          </FeatureDescription>
-        </FeatureCard>
-        
-        <FeatureCard>
-          <FeatureTitle>💬 소통과 지원</FeatureTitle>
-          <FeatureDescription>
-            공지사항, Q&A, FAQ 게시판을 통한
-            원활한 소통과 학습 지원을 제공합니다.
-          </FeatureDescription>
-        </FeatureCard>
-        
-        <FeatureCard>
-          <FeatureTitle>📱 모바일 지원</FeatureTitle>
-          <FeatureDescription>
-            PC, 모바일, 태블릿 등 다양한 기기에서
-            언제 어디서나 학습할 수 있습니다.
+            확장 가능한 Clean Architecture와 
+            TDD 기반의 견고한 시스템을 구축했습니다.
           </FeatureDescription>
         </FeatureCard>
       </Features>
-
-      <Stats>
-        <h2 style={{ marginBottom: '2rem', color: '#2c3e50' }}>LMS 현황</h2>
-        <StatsGrid>
-          <StatItem>
-            <StatNumber>1,200+</StatNumber>
-            <StatLabel>등록 회원</StatLabel>
-          </StatItem>
-          <StatItem>
-            <StatNumber>150+</StatNumber>
-            <StatLabel>개설 강좌</StatLabel>
-          </StatItem>
-          <StatItem>
-            <StatNumber>50+</StatNumber>
-            <StatLabel>협약 기업</StatLabel>
-          </StatItem>
-          <StatItem>
-            <StatNumber>95%</StatNumber>
-            <StatLabel>수료 만족도</StatLabel>
-          </StatItem>
-        </StatsGrid>
-      </Stats>
     </HomeContainer>
   );
 };

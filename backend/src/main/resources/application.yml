@@ -2,6 +2,7 @@ spring:
   application:
     name: lms-backend
   
+  # Database Configuration
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -22,18 +23,28 @@ spring:
       hibernate:
         format_sql: true
   
-  profiles:
-    active: dev
-
+  # Security Configuration
+  security:
+    user:
+      name: admin
+      password: admin123
+      
 server:
   port: 8080
   servlet:
     context-path: /api
 
-app:
-  jwt:
-    secret: mySecretKey123456789012345678901234567890
-    expiration: 86400000
+# JWT Configuration
+jwt:
+  secret: mySecretKey123456789012345678901234567890123456789012345678901234567890
+  expiration: 86400000 # 24 hours
+
+# Logging
+logging:
+  level:
+    com.lms.backend: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
 
 ---
 spring:
@@ -52,8 +63,3 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: false
-
-logging:
-  level:
-    com.lms.demo: INFO
-    org.springframework.security: DEBUG

@@ -43,7 +43,7 @@ const NavLink = styled(Link)`
   transition: background-color 0.2s;
   
   &:hover {
-    background-color: #34495e;
+    background-color: rgba(255, 255, 255, 0.1);
   }
 `;
 
@@ -57,17 +57,35 @@ const UserName = styled.span`
   font-weight: 500;
 `;
 
-const LogoutButton = styled.button`
-  background-color: #e74c3c;
+const UserBadge = styled.span<{ userType: string }>`
+  background-color: ${props => {
+    switch (props.userType) {
+      case 'ADMIN': return '#e74c3c';
+      case 'COMPANY': return '#f39c12';
+      case 'EMPLOYEE': return '#27ae60';
+      case 'JOB_SEEKER': return '#3498db';
+      default: return '#95a5a6';
+    }
+  }};
   color: white;
-  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+`;
+
+const LogoutButton = styled.button`
+  background: transparent;
+  border: 1px solid white;
+  color: white;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   
   &:hover {
-    background-color: #c0392b;
+    background-color: white;
+    color: #2c3e50;
   }
 `;
 
@@ -80,28 +98,37 @@ const Header: React.FC = () => {
     navigate('/');
   };
 
+  const getUserTypeLabel = (userType: string) => {
+    switch (userType) {
+      case 'ADMIN': return '관리자';
+      case 'COMPANY': return '협약사';
+      case 'EMPLOYEE': return '재직자';
+      case 'JOB_SEEKER': return '구직자';
+      default: return userType;
+    }
+  };
+
   return (
     <HeaderContainer>
       <HeaderContent>
         <Logo to="/">LMS 교육관리시스템</Logo>
         
         <Nav>
-          <NavLink to="/courses">강좌</NavLink>
-          
-          {user?.userType === 'admin' && (
-            <NavLink to="/admin">관리</NavLink>
-          )}
-          
           {isAuthenticated ? (
-            <UserInfo>
-              <UserName>{user?.name}님</UserName>
-              <NavLink to="/profile">마이페이지</NavLink>
-              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-            </UserInfo>
+            <>
+              <NavLink to="/dashboard">대시보드</NavLink>
+              <UserInfo>
+                <UserName>{user?.name}님</UserName>
+                <UserBadge userType={user?.userType || ''}>
+                  {getUserTypeLabel(user?.userType || '')}
+                </UserBadge>
+                <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+              </UserInfo>
+            </>
           ) : (
             <>
               <NavLink to="/login">로그인</NavLink>
-              <NavLink to="/register">회원가입</NavLink>
+              <NavLink to="/signup">회원가입</NavLink>
             </>
           )}
         </Nav>

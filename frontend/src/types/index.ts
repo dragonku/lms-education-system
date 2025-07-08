@@ -1,62 +1,60 @@
+// User Types
+export enum UserType {
+  EMPLOYEE = 'EMPLOYEE',
+  JOB_SEEKER = 'JOB_SEEKER',
+  COMPANY = 'COMPANY',
+  ADMIN = 'ADMIN'
+}
+
+export enum UserStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  REJECTED = 'REJECTED',
+  SUSPENDED = 'SUSPENDED'
+}
+
+export enum Authority {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  COMPANY = 'COMPANY'
+}
+
 export interface User {
-  id: string;
+  id: number;
   email: string;
   name: string;
   phoneNumber: string;
-  userType: 'admin' | 'instructor' | 'student' | 'company_partner';
-  status: 'active' | 'inactive' | 'pending_approval';
-  companyId?: string;
+  userType: UserType;
+  status: UserStatus;
+  companyName?: string;
+  authorities: Authority[];
   createdAt: string;
-  updatedAt: string;
+}
+
+// Auth Types
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface SignupRequest {
+  email: string;
+  password: string;
+  name: string;
+  phoneNumber: string;
+  userType: UserType;
+  companyName?: string;
 }
 
 export interface AuthResponse {
-  user: User;
   token: string;
-  refreshToken: string;
+  tokenType: string;
+  user: User;
 }
 
-export interface Course {
-  id: string;
-  title: string;
-  description: string;
-  objectives: string[];
-  targetAudience: string;
-  prerequisites?: string[];
-  duration: number;
-  maxStudents: number;
-  minStudents: number;
-  courseType: 'employee_training' | 'job_seeker_training' | 'general';
-  status: 'draft' | 'published' | 'archived';
-  category: string;
-  tags: string[];
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface LoginForm {
-  email: string;
-  password: string;
-}
-
-export interface RegisterForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  phoneNumber: string;
-  userType: User['userType'];
-  companyId?: string;
-}
-
+// API Response Type
 export interface ApiResponse<T> {
-  message: string;
-  data: T;
-  pagination?: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
+  data?: T;
+  message?: string;
+  error?: string;
 }
