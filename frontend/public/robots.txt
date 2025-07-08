@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /admin
+Disallow: /api
+Allow: /
+
+Sitemap: https://lms-education-system.vercel.app/sitemap.xml

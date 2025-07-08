@@ -32,13 +32,15 @@ Based on the PRD requirements, the system supports:
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Node.js with Express.js
-- **Database**: PostgreSQL
-- **Authentication**: JWT tokens
-- **Testing**: Jest
-- **Language**: TypeScript
-- **Architecture**: Clean Architecture
+- **Frontend**: React 18, TypeScript, Styled Components, React Router
+- **Backend**: Node.js, Express.js, TypeScript
+- **Database**: PostgreSQL 14+
+- **Authentication**: JWT tokens with role-based access control
+- **Testing**: Jest with >80% coverage
+- **Architecture**: Clean Architecture (4-layer)
 - **Methodology**: TDD (Test-Driven Development)
+- **Deployment**: Vercel (Frontend), Vercel/Railway (Backend)
+- **CI/CD**: GitHub Actions
 
 ## 📋 Requirements
 
@@ -151,18 +153,42 @@ tests/
 - CORS configuration
 - Helmet security headers
 
+## 🚀 Live Demo
+
+**🌐 Frontend**: https://lms-education-system.vercel.app
+**📊 GitHub**: https://github.com/dragonku/lms-education-system
+
+### Test Accounts
+```bash
+# Admin Account (API)
+curl -X POST https://api.example.com/users/register \
+  -d '{"email":"admin@lms.com","password":"admin123","name":"관리자","userType":"admin"}'
+
+# Student Account (Web)
+Visit /register and create a student account
+```
+
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👥 Contributing
 
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Quick Start for Contributors
 1. Fork the repository
-2. Create a feature branch
-3. Write tests for new functionality
-4. Implement the feature following Clean Architecture principles
-5. Ensure all tests pass
-6. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Follow our [coding standards](CONTRIBUTING.md#coding-standards)
+4. Write tests and ensure >80% coverage
+5. Submit a pull request
+
+### Development Guidelines
+- Follow Clean Architecture principles
+- Write tests first (TDD approach)
+- Use TypeScript for type safety
+- Follow conventional commit messages
+- Update documentation as needed
 
 ## 🐛 Known Issues
 
