@@ -1,10 +1,35 @@
 # Backend Setup Instructions
 
+⚠️ **현재 Java 21 환경에서 Maven 컴파일 이슈 발생 중**
+
+현재 시스템 환경에서 Maven compiler plugin이 Java 21을 지원하지 않아 컴파일 오류가 발생합니다.
+
+## 해결 방법
+
+### 옵션 1: Java 17 사용 (권장)
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install openjdk-17-jdk
+
+# Java 17로 전환
+sudo update-alternatives --config java
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+```
+
+### 옵션 2: IDE에서 실행
+IntelliJ IDEA나 Eclipse 같은 IDE에서 Spring Boot 애플리케이션을 직접 실행하세요.
+
+### 옵션 3: 사전 빌드된 JAR 사용
+```bash
+# 프로젝트에 포함된 빌드된 JAR가 있다면
+java -jar backend/target/demo-0.0.1-SNAPSHOT.jar
+```
+
 ## Prerequisites
 
 Java와 Maven이 설치되어 있어야 합니다.
 
-### Java 17 설치
+### Java 17 설치 (권장)
 ```bash
 # Ubuntu/Debian
 sudo apt update
