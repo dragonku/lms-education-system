@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { User, AuthResponse, Course, LoginForm, RegisterForm, ApiResponse } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 
 // Mock data for demo purposes (will be replaced with real API)
 const DEMO_MODE = !process.env.REACT_APP_API_URL;
