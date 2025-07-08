@@ -1,0 +1,8 @@
+# SPA fallback - redirect all requests to index.html for client-side routing
+/*    /index.html   200
+
+# API routes should be proxied to backend (if needed in the future)
+/api/*  https://your-backend-api.vercel.app/api/:splat  200
+
+# Health check endpoint
+/health   /index.html   200
