@@ -1,23 +1,19 @@
-# Backend files
+# Backend files - exclude everything except frontend
 src/
 tests/
-*.ts
-*.js
-!frontend/
-
-# Dependencies
-node_modules/
+dist/
+jest.config.js
+tsconfig.json
+start.sh
+stop.sh
 
 # Documentation
 *.md
-!frontend/*.md
+architecture_guide
+prd.md
 
-# Config files
-jest.config.js
-tsconfig.json
-package.json
-!frontend/package.json
-
-# Environment files
-.env*
-!frontend/.env*
+# Keep only essential files for frontend deployment
+!frontend/
+!_redirects
+!vercel.json
+!package.json
