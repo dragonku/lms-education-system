@@ -23,12 +23,12 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   userType: UserType;
-  status: UserStatus;
+  status: UserStatus | string;
   companyName?: string;
-  authorities: Authority[];
-  createdAt: string;
+  authorities: Authority[] | string[];
+  createdAt?: string;
 }
 
 // Auth Types
@@ -48,7 +48,7 @@ export interface SignupRequest {
 
 export interface AuthResponse {
   token: string;
-  tokenType: string;
+  tokenType?: string;
   user: User;
 }
 

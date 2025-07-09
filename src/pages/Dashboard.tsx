@@ -193,7 +193,7 @@ const Dashboard: React.FC = () => {
         )}
         <InfoRow>
           <strong>가입일:</strong>
-          <span>{new Date(user.createdAt).toLocaleDateString('ko-KR')}</span>
+          <span>{user.createdAt ? new Date(user.createdAt).toLocaleDateString('ko-KR') : '정보 없음'}</span>
         </InfoRow>
       </UserInfo>
     </DashboardContainer>
