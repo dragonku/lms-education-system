@@ -114,9 +114,11 @@ const Header: React.FC = () => {
         <Logo to="/">LMS 교육관리시스템</Logo>
         
         <Nav>
+          <NavLink to="/courses">과정 목록</NavLink>
           {isAuthenticated ? (
             <>
               <NavLink to="/dashboard">대시보드</NavLink>
+              <NavLink to="/mypage">마이페이지</NavLink>
               <UserInfo>
                 <UserName>{user?.name}님</UserName>
                 <UserBadge userType={user?.userType || ''}>

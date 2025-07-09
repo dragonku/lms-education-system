@@ -45,9 +45,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/auth/**", "/h2-console/**", "/health").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/company/**").hasRole("COMPANY")
+                .requestMatchers("/api/auth/**", "/api/health", "/h2-console/**").permitAll()
+                .requestMatchers("/api/courses/**").permitAll()
+                .requestMatchers("/api/enrollments/**").hasRole("USER")
+                .requestMatchers("/api/users/**").hasRole("USER")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions().sameOrigin()) // H2 Console

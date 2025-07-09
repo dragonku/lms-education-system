@@ -6,6 +6,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import Courses from './pages/Courses';
+import CourseDetail from './pages/CourseDetail';
+import MyPage from './pages/MyPage';
 import './App.css';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -46,6 +49,16 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:id" element={<CourseDetail />} />
+            <Route 
+              path="/mypage" 
+              element={
+                <ProtectedRoute>
+                  <MyPage />
                 </ProtectedRoute>
               } 
             />
