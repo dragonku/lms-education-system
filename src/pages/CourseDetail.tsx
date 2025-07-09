@@ -76,11 +76,11 @@ const CourseDetail: React.FC = () => {
 
   const getStatusBadge = (course: Course) => {
     if (course.status === 'FULL') {
-      return <span className="badge bg-danger">정원마감</span>;
+      return <span className="badge bg-danger"><i className="bi bi-person-fill-x me-1"></i>정원마감</span>;
     } else if (course.status === 'ACTIVE') {
-      return <span className="badge bg-success">모집중</span>;
+      return <span className="badge bg-success"><i className="bi bi-person-fill-check me-1"></i>모집중</span>;
     } else {
-      return <span className="badge bg-secondary">비활성</span>;
+      return <span className="badge bg-secondary"><i className="bi bi-pause-circle me-1"></i>비활성</span>;
     }
   };
 
@@ -107,7 +107,7 @@ const CourseDetail: React.FC = () => {
     if (enrollmentStatus === 'enrolled') {
       return (
         <button className="btn btn-success btn-lg" disabled>
-          수강 중
+          <i className="bi bi-check-circle me-2"></i>수강 중
         </button>
       );
     }
@@ -115,7 +115,7 @@ const CourseDetail: React.FC = () => {
     if (enrollmentStatus === 'pending') {
       return (
         <button className="btn btn-warning btn-lg" disabled>
-          승인 대기중
+          <i className="bi bi-hourglass-split me-2"></i>승인 대기중
         </button>
       );
     }
@@ -123,7 +123,7 @@ const CourseDetail: React.FC = () => {
     if (course?.status === 'FULL') {
       return (
         <button className="btn btn-danger btn-lg" disabled>
-          정원마감
+          <i className="bi bi-person-fill-x me-2"></i>정원마감
         </button>
       );
     }
@@ -131,7 +131,7 @@ const CourseDetail: React.FC = () => {
     if (course?.status === 'INACTIVE') {
       return (
         <button className="btn btn-secondary btn-lg" disabled>
-          모집 중단
+          <i className="bi bi-pause-circle me-2"></i>모집 중단
         </button>
       );
     }
@@ -142,7 +142,11 @@ const CourseDetail: React.FC = () => {
         onClick={handleEnroll}
         disabled={enrolling}
       >
-        {enrolling ? '신청 중...' : '수강 신청'}
+        {enrolling ? (
+          <><i className="bi bi-arrow-repeat spin me-2"></i>신청 중...</>
+        ) : (
+          <><i className="bi bi-person-plus me-2"></i>수강 신청</>
+        )}
       </button>
     );
   };
@@ -226,24 +230,30 @@ const CourseDetail: React.FC = () => {
 
               <div className="row mb-3">
                 <div className="col-md-6">
-                  <p className="mb-1">
+                  <p className="mb-2">
+                    <i className="bi bi-bookmark-fill text-primary me-2"></i>
                     <strong>카테고리:</strong> {course.category}
                   </p>
-                  <p className="mb-1">
+                  <p className="mb-2">
+                    <i className="bi bi-person-fill text-primary me-2"></i>
                     <strong>강사:</strong> {course.instructor}
                   </p>
-                  <p className="mb-1">
+                  <p className="mb-2">
+                    <i className="bi bi-clock-fill text-primary me-2"></i>
                     <strong>기간:</strong> {course.duration}
                   </p>
                 </div>
                 <div className="col-md-6">
-                  <p className="mb-1">
+                  <p className="mb-2">
+                    <i className="bi bi-calendar-event-fill text-success me-2"></i>
                     <strong>시작일:</strong> {formatDate(course.startDate)}
                   </p>
-                  <p className="mb-1">
+                  <p className="mb-2">
+                    <i className="bi bi-calendar-check-fill text-danger me-2"></i>
                     <strong>종료일:</strong> {formatDate(course.endDate)}
                   </p>
-                  <p className="mb-1">
+                  <p className="mb-2">
+                    <i className="bi bi-people-fill text-info me-2"></i>
                     <strong>정원:</strong> {course.currentEnrollment}/{course.capacity}명
                   </p>
                 </div>
@@ -255,10 +265,10 @@ const CourseDetail: React.FC = () => {
               </div>
 
               <div className="mb-3">
-                <h6>수강 현황</h6>
-                <div className="progress mb-2">
+                <h6><i className="bi bi-bar-chart-fill me-2"></i>수강 현황</h6>
+                <div className="progress mb-2" style={{ height: '20px' }}>
                   <div
-                    className="progress-bar"
+                    className="progress-bar progress-bar-striped"
                     role="progressbar"
                     style={{ width: `${(course.currentEnrollment / course.capacity) * 100}%` }}
                     aria-valuenow={course.currentEnrollment}
@@ -268,9 +278,16 @@ const CourseDetail: React.FC = () => {
                     {Math.round((course.currentEnrollment / course.capacity) * 100)}%
                   </div>
                 </div>
-                <small className="text-muted">
-                  {course.currentEnrollment}명 수강 중 (정원: {course.capacity}명)
-                </small>
+                <div className="d-flex justify-content-between">
+                  <small className="text-muted">
+                    <i className="bi bi-people me-1"></i>
+                    {course.currentEnrollment}명 수강 중
+                  </small>
+                  <small className="text-muted">
+                    <i className="bi bi-person-lines-fill me-1"></i>
+                    정원: {course.capacity}명
+                  </small>
+                </div>
               </div>
             </div>
           </div>
@@ -281,32 +298,37 @@ const CourseDetail: React.FC = () => {
             <div className="card-body">
               <h5 className="card-title">수강 정보</h5>
               
-              <div className="mb-3">
-                <h3 className="text-primary">{formatPrice(course.price)}원</h3>
+              <div className="mb-3 text-center">
+                <div className="display-6 text-primary fw-bold">
+                  <i className="bi bi-currency-dollar me-1"></i>
+                  {formatPrice(course.price)}원
+                </div>
               </div>
 
               <div className="mb-3">
-                <div className="d-flex justify-content-between mb-1">
-                  <span>수강 기간</span>
-                  <span>{course.duration}</span>
-                </div>
-                <div className="d-flex justify-content-between mb-1">
-                  <span>시작일</span>
-                  <span>{formatDate(course.startDate)}</span>
-                </div>
-                <div className="d-flex justify-content-between mb-1">
-                  <span>종료일</span>
-                  <span>{formatDate(course.endDate)}</span>
-                </div>
-                <div className="d-flex justify-content-between mb-1">
-                  <span>정원</span>
-                  <span>{course.capacity}명</span>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <span>잔여 자리</span>
-                  <span className={course.capacity - course.currentEnrollment <= 5 ? 'text-danger' : 'text-success'}>
-                    {course.capacity - course.currentEnrollment}명
-                  </span>
+                <div className="list-group list-group-flush">
+                  <div className="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                    <span><i className="bi bi-clock me-2"></i>수강 기간</span>
+                    <span className="fw-bold">{course.duration}</span>
+                  </div>
+                  <div className="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                    <span><i className="bi bi-calendar-event me-2"></i>시작일</span>
+                    <span className="fw-bold">{formatDate(course.startDate)}</span>
+                  </div>
+                  <div className="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                    <span><i className="bi bi-calendar-check me-2"></i>종료일</span>
+                    <span className="fw-bold">{formatDate(course.endDate)}</span>
+                  </div>
+                  <div className="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                    <span><i className="bi bi-people me-2"></i>정원</span>
+                    <span className="fw-bold">{course.capacity}명</span>
+                  </div>
+                  <div className="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                    <span><i className="bi bi-person-plus me-2"></i>잔여 자리</span>
+                    <span className={`fw-bold ${course.capacity - course.currentEnrollment <= 5 ? 'text-danger' : 'text-success'}`}>
+                      {course.capacity - course.currentEnrollment}명
+                    </span>
+                  </div>
                 </div>
               </div>
 

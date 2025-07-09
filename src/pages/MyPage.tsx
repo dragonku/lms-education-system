@@ -48,13 +48,13 @@ const MyPage: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'APPROVED':
-        return <span className="badge bg-success">승인됨</span>;
+        return <span className="badge bg-success"><i className="bi bi-check-circle me-1"></i>승인됨</span>;
       case 'PENDING':
-        return <span className="badge bg-warning">승인 대기</span>;
+        return <span className="badge bg-warning"><i className="bi bi-hourglass-split me-1"></i>승인 대기</span>;
       case 'REJECTED':
-        return <span className="badge bg-danger">거절됨</span>;
+        return <span className="badge bg-danger"><i className="bi bi-x-circle me-1"></i>거절됨</span>;
       case 'CANCELLED':
-        return <span className="badge bg-secondary">취소됨</span>;
+        return <span className="badge bg-secondary"><i className="bi bi-dash-circle me-1"></i>취소됨</span>;
       default:
         return <span className="badge bg-secondary">{status}</span>;
     }
@@ -63,11 +63,11 @@ const MyPage: React.FC = () => {
   const getCourseStatusBadge = (status: string) => {
     switch (status) {
       case 'ACTIVE':
-        return <span className="badge bg-success">진행중</span>;
+        return <span className="badge bg-success"><i className="bi bi-play-circle me-1"></i>진행중</span>;
       case 'FULL':
-        return <span className="badge bg-warning">정원마감</span>;
+        return <span className="badge bg-warning"><i className="bi bi-people-fill me-1"></i>정원마감</span>;
       case 'INACTIVE':
-        return <span className="badge bg-secondary">비활성</span>;
+        return <span className="badge bg-secondary"><i className="bi bi-pause-circle me-1"></i>비활성</span>;
       default:
         return <span className="badge bg-secondary">{status}</span>;
     }
@@ -100,15 +100,29 @@ const MyPage: React.FC = () => {
           {/* 사용자 정보 */}
           <div className="card mb-4">
             <div className="card-body">
-              <h5 className="card-title">사용자 정보</h5>
+              <h5 className="card-title">
+                <i className="bi bi-person-circle me-2"></i>사용자 정보
+              </h5>
               <div className="row">
                 <div className="col-md-6">
-                  <p><strong>이름:</strong> {user.name}</p>
-                  <p><strong>이메일:</strong> {user.email}</p>
+                  <p className="mb-2">
+                    <i className="bi bi-person-fill text-primary me-2"></i>
+                    <strong>이름:</strong> {user.name}
+                  </p>
+                  <p className="mb-2">
+                    <i className="bi bi-envelope-fill text-primary me-2"></i>
+                    <strong>이메일:</strong> {user.email}
+                  </p>
                 </div>
                 <div className="col-md-6">
-                  <p><strong>사용자 유형:</strong> {user.userType}</p>
-                  <p><strong>가입일:</strong> {user.createdAt ? formatDate(user.createdAt) : '정보 없음'}</p>
+                  <p className="mb-2">
+                    <i className="bi bi-bookmark-fill text-primary me-2"></i>
+                    <strong>사용자 유형:</strong> {user.userType}
+                  </p>
+                  <p className="mb-2">
+                    <i className="bi bi-calendar-plus-fill text-primary me-2"></i>
+                    <strong>가입일:</strong> {user.createdAt ? formatDate(user.createdAt) : '정보 없음'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -117,7 +131,9 @@ const MyPage: React.FC = () => {
           {/* 수강 내역 */}
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">수강 내역</h5>
+              <h5 className="card-title">
+                <i className="bi bi-journal-bookmark me-2"></i>수강 내역
+              </h5>
               
               {loading ? (
                 <div className="d-flex justify-content-center p-4">
@@ -127,13 +143,14 @@ const MyPage: React.FC = () => {
                 </div>
               ) : error ? (
                 <div className="alert alert-danger" role="alert">
-                  {error}
+                  <i className="bi bi-exclamation-triangle me-2"></i>{error}
                 </div>
               ) : enrollments.length === 0 ? (
                 <div className="alert alert-info">
+                  <i className="bi bi-info-circle me-2"></i>
                   수강 신청한 과정이 없습니다.
                   <Link to="/courses" className="btn btn-primary ms-2">
-                    과정 둘러보기
+                    <i className="bi bi-search me-1"></i>과정 둘러보기
                   </Link>
                 </div>
               ) : (
@@ -183,14 +200,18 @@ const MyPage: React.FC = () => {
                                 className="btn btn-sm btn-outline-danger"
                                 onClick={() => handleCancelEnrollment(enrollment.id)}
                               >
-                                취소
+                                <i className="bi bi-x-circle me-1"></i>취소
                               </button>
                             )}
                             {enrollment.status === 'APPROVED' && (
-                              <span className="text-success small">수강 중</span>
+                              <span className="text-success small">
+                                <i className="bi bi-check-circle me-1"></i>수강 중
+                              </span>
                             )}
                             {enrollment.status === 'REJECTED' && (
-                              <span className="text-danger small">거절됨</span>
+                              <span className="text-danger small">
+                                <i className="bi bi-x-circle me-1"></i>거절됨
+                              </span>
                             )}
                           </td>
                         </tr>

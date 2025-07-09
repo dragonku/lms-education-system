@@ -65,11 +65,11 @@ const Courses: React.FC = () => {
 
   const getStatusBadge = (course: Course) => {
     if (course.status === 'FULL') {
-      return <span className="badge badge-danger">정원마감</span>;
+      return <span className="badge bg-danger"><i className="bi bi-person-fill-x me-1"></i>정원마감</span>;
     } else if (course.status === 'ACTIVE') {
-      return <span className="badge badge-success">모집중</span>;
+      return <span className="badge bg-success"><i className="bi bi-person-fill-check me-1"></i>모집중</span>;
     } else {
-      return <span className="badge badge-secondary">비활성</span>;
+      return <span className="badge bg-secondary"><i className="bi bi-pause-circle me-1"></i>비활성</span>;
     }
   };
 
@@ -112,25 +112,31 @@ const Courses: React.FC = () => {
           {/* 필터 및 검색 */}
           <div className="row mb-4">
             <div className="col-md-4">
-              <select
-                className="form-select"
-                value={selectedCategory}
-                onChange={(e) => handleCategoryChange(e.target.value)}
-              >
-                <option value="">전체 카테고리</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
+              <div className="input-group">
+                <span className="input-group-text"><i className="bi bi-funnel"></i></span>
+                <select
+                  className="form-select"
+                  value={selectedCategory}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                >
+                  <option value="">전체 카테고리</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="col-md-8">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="과정명, 설명, 강사명으로 검색..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
+              <div className="input-group">
+                <span className="input-group-text"><i className="bi bi-search"></i></span>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="과정명, 설명, 강사명으로 검색..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+              </div>
             </div>
           </div>
 
@@ -160,9 +166,14 @@ const Courses: React.FC = () => {
                         {getStatusBadge(course)}
                       </div>
                       
-                      <p className="card-text text-muted small mb-2">
-                        {course.category} | {course.instructor}
-                      </p>
+                      <div className="mb-2">
+                        <span className="badge bg-light text-dark me-2">
+                          <i className="bi bi-bookmark me-1"></i>{course.category}
+                        </span>
+                        <span className="text-muted small">
+                          <i className="bi bi-person me-1"></i>{course.instructor}
+                        </span>
+                      </div>
                       
                       <p className="card-text flex-grow-1">
                         {course.description.length > 100 
@@ -171,33 +182,30 @@ const Courses: React.FC = () => {
                       </p>
                       
                       <div className="mt-auto">
-                        <div className="row text-small mb-2">
+                        <div className="row small mb-2">
                           <div className="col-6">
-                            <strong>기간:</strong> {course.duration}
+                            <i className="bi bi-clock me-1"></i><strong>기간:</strong> {course.duration}
                           </div>
                           <div className="col-6">
-                            <strong>정원:</strong> {course.currentEnrollment}/{course.capacity}
-                          </div>
-                        </div>
-                        
-                        <div className="row text-small mb-3">
-                          <div className="col-6">
-                            <strong>시작:</strong> {formatDate(course.startDate)}
-                          </div>
-                          <div className="col-6">
-                            <strong>가격:</strong> {formatPrice(course.price)}원
+                            <i className="bi bi-people me-1"></i><strong>정원:</strong> {course.currentEnrollment}/{course.capacity}
                           </div>
                         </div>
                         
-                        <div className="d-flex justify-content-between align-items-center">
-                          <Link
-                            to={`/courses/${course.id}`}
-                            className="btn btn-primary btn-sm"
-                          >
-                            상세보기
-                          </Link>
-                          
-                          <div className="progress" style={{ width: '60px', height: '6px' }}>
+                        <div className="row small mb-3">
+                          <div className="col-6">
+                            <i className="bi bi-calendar-event me-1"></i><strong>시작:</strong> {formatDate(course.startDate)}
+                          </div>
+                          <div className="col-6">
+                            <i className="bi bi-currency-dollar me-1"></i><strong>가격:</strong> {formatPrice(course.price)}원
+                          </div>
+                        </div>
+                        
+                        <div className="mb-2">
+                          <div className="d-flex justify-content-between align-items-center small mb-1">
+                            <span>수강률</span>
+                            <span>{Math.round((course.currentEnrollment / course.capacity) * 100)}%</span>
+                          </div>
+                          <div className="progress" style={{ height: '8px' }}>
                             <div
                               className="progress-bar"
                               role="progressbar"
@@ -207,6 +215,28 @@ const Courses: React.FC = () => {
                               aria-valuemax={course.capacity}
                             ></div>
                           </div>
+                        </div>
+                        
+                        <div className="d-flex justify-content-between align-items-center">
+                          <Link
+                            to={`/courses/${course.id}`}
+                            className="btn btn-primary btn-sm"
+                          >
+                            <i className="bi bi-eye me-1"></i>상세보기
+                          </Link>
+                          
+                          <span className="text-muted small">
+                            {course.capacity - course.currentEnrollment > 0 ? (
+                              <span className="text-success">
+                                <i className="bi bi-check-circle me-1"></i>
+                                {course.capacity - course.currentEnrollment}자리 남음
+                              </span>
+                            ) : (
+                              <span className="text-danger">
+                                <i className="bi bi-x-circle me-1"></i>마감
+                              </span>
+                            )}
+                          </span>
                         </div>
                       </div>
                     </div>
