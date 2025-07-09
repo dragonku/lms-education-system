@@ -119,6 +119,9 @@ const Header: React.FC = () => {
             <>
               <NavLink to="/dashboard">대시보드</NavLink>
               <NavLink to="/mypage">마이페이지</NavLink>
+              {user?.userType === 'ADMIN' && (
+                <NavLink to="/admin">관리자</NavLink>
+              )}
               <UserInfo>
                 <UserName>{user?.name}님</UserName>
                 <UserBadge userType={user?.userType || ''}>

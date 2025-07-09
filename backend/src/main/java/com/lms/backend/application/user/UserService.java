@@ -13,7 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -112,5 +114,36 @@ public class UserService implements UserDetailsService {
         user.reject();
         User savedUser = userRepository.save(user);
         return new UserResponse(savedUser);
+    }
+    
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+    
+    public void suspendUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+        
+        user.suspend();
+        userRepository.save(user);
+    }
+    
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+        
+        userRepository.delete(user);
+    }
+    
+    public Map<String, Object> getDashboardStats() {
+        List<User> allUsers = userRepository.findAll();
+        
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalUsers", allUsers.size());
+        stats.put("activeUsers", allUsers.stream().filter(User::isActive).count());
+        stats.put("pendingUsers", allUsers.stream().filter(u -> u.getStatus() == com.lms.backend.domain.user.UserStatus.PENDING).count());
+        stats.put("companyUsers", allUsers.stream().filter(u -> u.getUserType() == UserType.COMPANY).count());
+        
+        return stats;
     }
 }

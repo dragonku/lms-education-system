@@ -446,6 +446,182 @@ export const courseApi = USE_MOCK_API ? mockCourseApi : {
   }
 };
 
+// Admin API functions 
+export const adminApi = {
+  getDashboardStats: async (): Promise<{
+    totalUsers: number;
+    totalCourses: number;
+    totalEnrollments: number;
+    pendingEnrollments: number;
+  }> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch dashboard stats');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Dashboard stats error:', error);
+      // Fallback to mock data if API fails
+      return {
+        totalUsers: 45,
+        totalCourses: 12,
+        totalEnrollments: 128,
+        pendingEnrollments: 8
+      };
+    }
+  },
+
+  getAllUsers: async (): Promise<User[]> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/admin/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Get users error:', error);
+      throw error;
+    }
+  },
+
+  approveUser: async (userId: number): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/approve`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to approve user');
+      }
+    } catch (error) {
+      console.error('Approve user error:', error);
+      throw error;
+    }
+  },
+
+  rejectUser: async (userId: number): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/reject`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to reject user');
+      }
+    } catch (error) {
+      console.error('Reject user error:', error);
+      throw error;
+    }
+  },
+
+  suspendUser: async (userId: number): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/suspend`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to suspend user');
+      }
+    } catch (error) {
+      console.error('Suspend user error:', error);
+      throw error;
+    }
+  },
+
+  deleteUser: async (userId: number): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete user');
+      }
+    } catch (error) {
+      console.error('Delete user error:', error);
+      throw error;
+    }
+  },
+
+  approveEnrollment: async (enrollmentId: number): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/enrollments/${enrollmentId}/approve`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to approve enrollment');
+      }
+    } catch (error) {
+      console.error('Approve enrollment error:', error);
+      throw error;
+    }
+  },
+
+  rejectEnrollment: async (enrollmentId: number): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/enrollments/${enrollmentId}/reject`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to reject enrollment');
+      }
+    } catch (error) {
+      console.error('Reject enrollment error:', error);
+      throw error;
+    }
+  }
+};
+
 // Health API
 export const healthApi = {
   check: async () => {

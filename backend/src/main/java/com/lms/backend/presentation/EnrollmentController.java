@@ -3,7 +3,7 @@ package com.lms.backend.presentation;
 import com.lms.backend.application.course.CourseService;
 import com.lms.backend.application.course.dto.EnrollmentRequest;
 import com.lms.backend.application.course.dto.EnrollmentResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/enrollments")
-@RequiredArgsConstructor
 public class EnrollmentController {
     
     private final CourseService courseService;
+    
+    @Autowired
+    public EnrollmentController(CourseService courseService) {
+        this.courseService = courseService;
+    }
     
     @PostMapping
     @PreAuthorize("hasRole('USER')")

@@ -36,6 +36,11 @@ public class UserResponse {
         this.createdAt = user.getCreatedAt();
     }
     
+    // 정적 팩토리 메서드
+    public static UserResponse from(User user) {
+        return new UserResponse(user);
+    }
+    
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

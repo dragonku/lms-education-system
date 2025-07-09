@@ -90,6 +90,10 @@ public class User {
         this.status = UserStatus.REJECTED;
     }
     
+    public void suspend() {
+        this.status = UserStatus.SUSPENDED;
+    }
+    
     public boolean isActive() {
         return this.status == UserStatus.ACTIVE;
     }

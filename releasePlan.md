@@ -11,7 +11,170 @@
 *   **Architecture:** Clean Architecture, TDD, MSA (고려)
 *   **CI/CD:** GitHub Actions
 
-## 릴리즈 계획
+## Git Worktree 병렬 개발 환경 구성
+
+### 디렉토리 구조 권장사항
+
+```
+lms/                          # 메인 프로젝트 디렉토리
+├── main/                     # 메인 브랜치 작업공간 (기본)
+│   ├── backend/
+│   ├── frontend/
+│   └── docs/
+├── worktrees/                # Git worktree 전용 디렉토리
+│   ├── sprint-1-auth/        # Sprint 1: 인증 시스템
+│   ├── sprint-2-backend/     # Sprint 2: 백엔드 개발
+│   ├── sprint-2-frontend/    # Sprint 2: 프론트엔드 개발
+│   ├── sprint-3-board/       # Sprint 3: 게시판 개발
+│   ├── sprint-4-survey/      # Sprint 4: 설문 시스템
+│   ├── sprint-5-admin/       # Sprint 5: 관리자 기능
+│   └── integration/          # 통합 테스트용 브랜치
+└── shared/                   # 공유 리소스 (문서, 설정 등)
+```
+
+### Git Worktree 초기 설정 명령어
+
+```bash
+# 1. 메인 프로젝트에서 worktrees 디렉토리 생성
+cd /home/dragonku/lms
+mkdir -p worktrees
+
+# 2. 각 스프린트별 브랜치 생성 및 worktree 설정
+git branch sprint-1-auth
+git branch sprint-2-backend  
+git branch sprint-2-frontend
+git branch sprint-3-board
+git branch sprint-4-survey
+git branch sprint-5-admin
+git branch integration
+
+# 3. Worktree 생성
+git worktree add worktrees/sprint-1-auth sprint-1-auth
+git worktree add worktrees/sprint-2-backend sprint-2-backend
+git worktree add worktrees/sprint-2-frontend sprint-2-frontend
+git worktree add worktrees/sprint-3-board sprint-3-board
+git worktree add worktrees/sprint-4-survey sprint-4-survey
+git worktree add worktrees/sprint-5-admin sprint-5-admin
+git worktree add worktrees/integration integration
+
+# 4. Worktree 상태 확인
+git worktree list
+```
+
+### 병렬 개발 워크플로우
+
+1. **스프린트 시작**: 각 worktree에서 독립적으로 개발
+2. **정기 동기화**: 매주 금요일 integration 브랜치에 merge
+3. **릴리즈 준비**: integration 브랜치에서 테스트 후 main으로 merge
+4. **브랜치 정리**: 완료된 스프린트 worktree 정리
+
+### 브랜치 병합 전략
+
+```bash
+# 스프린트 완료 후 integration으로 병합
+cd worktrees/sprint-1-auth
+git checkout integration
+git merge sprint-1-auth --no-ff
+
+# 통합 테스트 완료 후 main으로 병합
+git checkout main
+git merge integration --no-ff
+
+# 완료된 worktree 정리
+git worktree remove worktrees/sprint-1-auth
+git branch -d sprint-1-auth
+```
+
+## 스프린트 기반 릴리즈 계획
+
+### Sprint 1: 기본 설정 및 사용자 인증 (1주차)
+
+**Git Worktree 설정:**
+```bash
+# Sprint 1 개발 시작
+cd /home/dragonku/lms
+git worktree add worktrees/sprint-1-auth sprint-1-auth
+cd worktrees/sprint-1-auth
+```
+
+**병렬 개발 구조:**
+- **Backend Team**: 인증 시스템 구현
+- **Frontend Team**: 로그인/회원가입 UI 구현
+- **DevOps Team**: CI/CD 파이프라인 구축
+
+### Sprint 2: 핵심 컨텐츠 관리 - 백엔드 (2주차)
+
+**Git Worktree 설정:**
+```bash
+# Sprint 2 백엔드 개발
+git worktree add worktrees/sprint-2-backend sprint-2-backend
+cd worktrees/sprint-2-backend
+```
+
+**Focus**: Course 엔티티 및 API 개발
+
+### Sprint 3: 핵심 컨텐츠 관리 - 프론트엔드 (3주차)
+
+**Git Worktree 설정:**
+```bash
+# Sprint 3 프론트엔드 개발 (Sprint 2와 병렬 진행 가능)
+git worktree add worktrees/sprint-2-frontend sprint-2-frontend
+cd worktrees/sprint-2-frontend
+```
+
+**Focus**: 과정 관리 UI 및 마이페이지 구현
+
+### Sprint 4: 게시판 및 커뮤니티 기능 (4주차)
+
+**Git Worktree 설정:**
+```bash
+# Sprint 4 게시판 개발
+git worktree add worktrees/sprint-3-board sprint-3-board
+cd worktrees/sprint-3-board
+```
+
+**Focus**: 게시판 시스템 풀스택 구현
+
+### Sprint 5: 설문 및 평가 시스템 (5주차)
+
+**Git Worktree 설정:**
+```bash
+# Sprint 5 설문 시스템 개발
+git worktree add worktrees/sprint-4-survey sprint-4-survey
+cd worktrees/sprint-4-survey
+```
+
+**Focus**: 설문조사 및 시험 기능 구현
+
+### Sprint 6: 관리자 및 통계 기능 (6주차)
+
+**Git Worktree 설정:**
+```bash
+# Sprint 6 관리자 기능 개발
+git worktree add worktrees/sprint-5-admin sprint-5-admin
+cd worktrees/sprint-5-admin
+```
+
+**Focus**: 관리자 대시보드 및 통계 시스템 구현
+
+### 통합 스프린트 (7주차)
+
+**Git Worktree 설정:**
+```bash
+# 통합 테스트 및 배포 준비
+git worktree add worktrees/integration integration
+cd worktrees/integration
+
+# 모든 스프린트 결과 통합
+git merge sprint-1-auth --no-ff
+git merge sprint-2-backend --no-ff
+git merge sprint-2-frontend --no-ff
+git merge sprint-3-board --no-ff
+git merge sprint-4-survey --no-ff
+git merge sprint-5-admin --no-ff
+```
+
+## 원본 릴리즈 계획 (참고용)
 
 ### Release 1: 기본 설정 및 사용자 인증 (2주)
 

@@ -16,6 +16,7 @@
 /home/dragonku/lms/backend/src/main/java/com/lms/backend/domain/user/UserStatus.java
 /home/dragonku/lms/backend/src/main/java/com/lms/backend/domain/course/CourseStatus.java
 /home/dragonku/lms/backend/src/main/java/com/lms/backend/application/course/dto/EnrollmentResponse.java
+/home/dragonku/lms/backend/src/main/java/com/lms/backend/presentation/AdminController.java
 /home/dragonku/lms/backend/src/main/java/com/lms/backend/application/user/dto/UserResponse.java
 /home/dragonku/lms/backend/src/main/java/com/lms/backend/application/user/UserService.java
 /home/dragonku/lms/backend/src/main/java/com/lms/backend/domain/course/Course.java

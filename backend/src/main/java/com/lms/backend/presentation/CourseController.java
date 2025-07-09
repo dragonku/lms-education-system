@@ -3,7 +3,7 @@ package com.lms.backend.presentation;
 import com.lms.backend.application.course.CourseService;
 import com.lms.backend.application.course.dto.*;
 import com.lms.backend.domain.course.CourseStatus;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
-@RequiredArgsConstructor
 public class CourseController {
     
     private final CourseService courseService;
+    
+    @Autowired
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
     
     @GetMapping
     public ResponseEntity<Map<String, Object>> getCourses(

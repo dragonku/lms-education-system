@@ -53,6 +53,12 @@ export interface AuthResponse {
 }
 
 // Course Types
+export enum CourseStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  FULL = 'FULL'
+}
+
 export interface Course {
   id: number;
   title: string;
@@ -65,7 +71,7 @@ export interface Course {
   endDate: string;
   duration: string;
   price: number;
-  status: 'ACTIVE' | 'INACTIVE' | 'FULL';
+  status: CourseStatus | string;
   imageUrl?: string;
   createdAt: string;
   updatedAt: string;
@@ -78,11 +84,18 @@ export interface CourseCategory {
   courses: Course[];
 }
 
+export enum EnrollmentStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CANCELLED = 'CANCELLED'
+}
+
 export interface Enrollment {
   id: number;
   userId: number;
   courseId: number;
-  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+  status: EnrollmentStatus | string;
   enrolledAt: string;
   approvedAt?: string;
   course: Course;

@@ -9,7 +9,7 @@ import com.lms.backend.domain.user.User;
 import com.lms.backend.infrastructure.course.CourseRepository;
 import com.lms.backend.infrastructure.course.EnrollmentRepository;
 import com.lms.backend.infrastructure.user.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CourseService {
     
     private final CourseRepository courseRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final UserRepository userRepository;
+    
+    @Autowired
+    public CourseService(CourseRepository courseRepository, EnrollmentRepository enrollmentRepository, UserRepository userRepository) {
+        this.courseRepository = courseRepository;
+        this.enrollmentRepository = enrollmentRepository;
+        this.userRepository = userRepository;
+    }
     
     public Page<CourseResponse> getCourses(String category, CourseStatus status, String search, Pageable pageable) {
         Page<Course> courses = courseRepository.findCoursesWithFilters(category, status, search, pageable);
@@ -91,11 +97,10 @@ public class CourseService {
             throw new RuntimeException("Course enrollment is not available");
         }
         
-        Enrollment enrollment = Enrollment.builder()
-                .user(user)
-                .course(course)
-                .status(EnrollmentStatus.PENDING)
-                .build();
+        Enrollment enrollment = new Enrollment();
+        enrollment.setUser(user);
+        enrollment.setCourse(course);
+        enrollment.setStatus(EnrollmentStatus.PENDING);
         
         Enrollment savedEnrollment = enrollmentRepository.save(enrollment);
         course.incrementEnrollment();
