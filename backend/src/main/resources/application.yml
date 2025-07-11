@@ -1,6 +1,8 @@
 spring:
   application:
     name: lms-backend
+  main:
+    allow-circular-references: true
   
   # Database Configuration
   datasource:
@@ -22,6 +24,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  
   
   servlet:
     multipart:

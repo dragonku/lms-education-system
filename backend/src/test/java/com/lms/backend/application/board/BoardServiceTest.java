@@ -56,8 +56,8 @@ class BoardServiceTest {
         Set<Authority> authorities = new HashSet<>();
         authorities.add(Authority.USER);
         
-        testUser = new User("test@example.com", "password", "테스트사용자", "01012345678", UserType.JOB_SEEKER, authorities);
-        testUser.setStatus(UserStatus.ACTIVE);
+        testUser = User.createIndividualUser("test@example.com", "password", "테스트사용자", "01012345678", UserType.JOB_SEEKER);
+        testUser.approve();
         
         testPost = Post.createQnA("테스트 제목", "테스트 내용", testUser, false);
     }
@@ -189,8 +189,8 @@ class BoardServiceTest {
         Set<Authority> authorities = new HashSet<>();
         authorities.add(Authority.USER);
         
-        User otherUser = new User("other@example.com", "password", "다른사용자", "01087654321", UserType.JOB_SEEKER, authorities);
-        otherUser.setStatus(UserStatus.ACTIVE);
+        User otherUser = User.createIndividualUser("other@example.com", "password", "다른사용자", "01087654321", UserType.JOB_SEEKER);
+        otherUser.approve();
         
         when(postRepository.findById(postId)).thenReturn(Optional.of(testPost));
         when(userRepository.findById(otherUser.getId())).thenReturn(Optional.of(otherUser));

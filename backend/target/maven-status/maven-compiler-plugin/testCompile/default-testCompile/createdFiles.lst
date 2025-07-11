@@ -1,2 +1,3 @@
 com/lms/backend/application/user/UserServiceTest.class
 com/lms/backend/presentation/AuthControllerTest.class
+com/lms/backend/application/board/BoardServiceTest.class
