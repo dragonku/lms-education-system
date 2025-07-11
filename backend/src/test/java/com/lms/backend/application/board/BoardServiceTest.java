@@ -53,13 +53,26 @@ class BoardServiceTest {
 
     @BeforeEach
     void setUp() {
-        Set<Authority> authorities = new HashSet<>();
-        authorities.add(Authority.USER);
-        
         testUser = User.createIndividualUser("test@example.com", "password", "테스트사용자", "01012345678", UserType.JOB_SEEKER);
         testUser.approve();
+        // Reflection을 사용하여 ID 설정
+        try {
+            java.lang.reflect.Field idField = testUser.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(testUser, 1L);
+        } catch (Exception e) {
+            // Ignore reflection exceptions in test
+        }
         
         testPost = Post.createQnA("테스트 제목", "테스트 내용", testUser, false);
+        // Post ID도 설정
+        try {
+            java.lang.reflect.Field idField = testPost.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(testPost, 1L);
+        } catch (Exception e) {
+            // Ignore reflection exceptions in test
+        }
     }
 
     @Test
@@ -186,11 +199,17 @@ class BoardServiceTest {
     void deletePost_byNonAuthor_shouldThrowException() {
         // Given
         Long postId = 1L;
-        Set<Authority> authorities = new HashSet<>();
-        authorities.add(Authority.USER);
         
         User otherUser = User.createIndividualUser("other@example.com", "password", "다른사용자", "01087654321", UserType.JOB_SEEKER);
         otherUser.approve();
+        // otherUser ID 설정
+        try {
+            java.lang.reflect.Field idField = otherUser.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(otherUser, 2L);
+        } catch (Exception e) {
+            // Ignore reflection exceptions in test
+        }
         
         when(postRepository.findById(postId)).thenReturn(Optional.of(testPost));
         when(userRepository.findById(otherUser.getId())).thenReturn(Optional.of(otherUser));
