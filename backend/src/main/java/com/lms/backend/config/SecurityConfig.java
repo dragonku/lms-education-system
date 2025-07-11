@@ -47,6 +47,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .antMatchers("/api/auth/**", "/api/health", "/h2-console/**").permitAll()
                 .antMatchers("/api/courses/**").permitAll()
+                .antMatchers("/api/files/*/download").permitAll()
+                .antMatchers("/api/files/**").hasRole("USER")
                 .antMatchers("/api/enrollments/**").hasRole("USER")
                 .antMatchers("/api/users/**").hasRole("USER")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")

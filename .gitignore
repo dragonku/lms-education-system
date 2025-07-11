@@ -64,3 +64,6 @@ frontend/.env.production.local
 
 # Vercel
 .vercel
+
+# YoYo AI version control directory
+.yoyo/

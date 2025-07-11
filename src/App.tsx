@@ -13,6 +13,13 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminCourses from './pages/AdminCourses';
 import AdminEnrollments from './pages/AdminEnrollments';
+import NoticeBoard from './pages/NoticeBoard';
+import NoticeDetail from './pages/NoticeDetail';
+import NoticeWrite from './pages/NoticeWrite';
+import QnABoard from './pages/QnABoard';
+import QnADetail from './pages/QnADetail';
+import QnAWrite from './pages/QnAWrite';
+import { UserType } from './types';
 import './App.css';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,7 +34,7 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, user } = useAuth();
-  return isAuthenticated && user?.userType === 'ADMIN' ? <>{children}</> : <Navigate to="/dashboard" />;
+  return isAuthenticated && user?.userType === UserType.ADMIN ? <>{children}</> : <Navigate to="/dashboard" />;
 };
 
 function App() {
@@ -63,6 +70,42 @@ function App() {
             />
             <Route path="/courses" element={<Courses />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
+            <Route path="/board/notice" element={<NoticeBoard />} />
+            <Route path="/board/notice/:id" element={<NoticeDetail />} />
+            <Route 
+              path="/board/notice/write" 
+              element={
+                <AdminRoute>
+                  <NoticeWrite />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="/board/notice/:id/edit" 
+              element={
+                <AdminRoute>
+                  <NoticeWrite />
+                </AdminRoute>
+              } 
+            />
+            <Route path="/qna" element={<QnABoard />} />
+            <Route path="/qna/:id" element={<QnADetail />} />
+            <Route 
+              path="/qna/write" 
+              element={
+                <ProtectedRoute>
+                  <QnAWrite />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/qna/edit/:id" 
+              element={
+                <ProtectedRoute>
+                  <QnAWrite />
+                </ProtectedRoute>
+              } 
+            />
             <Route 
               path="/mypage" 
               element={

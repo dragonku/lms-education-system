@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
+import { UserType } from '../../types';
 
 const HeaderContainer = styled.header`
   background-color: #2c3e50;
@@ -57,13 +58,13 @@ const UserName = styled.span`
   font-weight: 500;
 `;
 
-const UserBadge = styled.span<{ userType: string }>`
+const UserBadge = styled.span<{ userType: UserType }>`
   background-color: ${props => {
     switch (props.userType) {
-      case 'ADMIN': return '#e74c3c';
-      case 'COMPANY': return '#f39c12';
-      case 'EMPLOYEE': return '#27ae60';
-      case 'JOB_SEEKER': return '#3498db';
+      case UserType.ADMIN: return '#e74c3c';
+      case UserType.COMPANY: return '#f39c12';
+      case UserType.EMPLOYEE: return '#27ae60';
+      case UserType.JOB_SEEKER: return '#3498db';
       default: return '#95a5a6';
     }
   }};
@@ -98,12 +99,12 @@ const Header: React.FC = () => {
     navigate('/');
   };
 
-  const getUserTypeLabel = (userType: string) => {
+  const getUserTypeLabel = (userType: UserType) => {
     switch (userType) {
-      case 'ADMIN': return '관리자';
-      case 'COMPANY': return '협약사';
-      case 'EMPLOYEE': return '재직자';
-      case 'JOB_SEEKER': return '구직자';
+      case UserType.ADMIN: return '관리자';
+      case UserType.COMPANY: return '협약사';
+      case UserType.EMPLOYEE: return '재직자';
+      case UserType.JOB_SEEKER: return '구직자';
       default: return userType;
     }
   };
@@ -115,17 +116,19 @@ const Header: React.FC = () => {
         
         <Nav>
           <NavLink to="/courses">과정 목록</NavLink>
+          <NavLink to="/board/notice">공지사항</NavLink>
+          <NavLink to="/qna">Q&A</NavLink>
           {isAuthenticated ? (
             <>
               <NavLink to="/dashboard">대시보드</NavLink>
               <NavLink to="/mypage">마이페이지</NavLink>
-              {user?.userType === 'ADMIN' && (
+              {user?.userType === UserType.ADMIN && (
                 <NavLink to="/admin">관리자</NavLink>
               )}
               <UserInfo>
                 <UserName>{user?.name}님</UserName>
-                <UserBadge userType={user?.userType || ''}>
-                  {getUserTypeLabel(user?.userType || '')}
+                <UserBadge userType={user?.userType || UserType.EMPLOYEE}>
+                  {getUserTypeLabel(user?.userType || UserType.EMPLOYEE)}
                 </UserBadge>
                 <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               </UserInfo>

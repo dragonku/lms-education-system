@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { User, UserType } from '../types';
+import { User, UserType, Authority } from '../types';
 import { adminApi } from '../services/api';
 
 const AdminUsers: React.FC = () => {
@@ -19,7 +19,7 @@ const AdminUsers: React.FC = () => {
       phoneNumber: '010-1234-5678',
       userType: UserType.ADMIN,
       status: 'ACTIVE',
-      authorities: ['ADMIN', 'USER'],
+      authorities: [Authority.ADMIN, Authority.USER],
       createdAt: '2025-01-01T00:00:00Z'
     },
     {
@@ -29,7 +29,7 @@ const AdminUsers: React.FC = () => {
       phoneNumber: '010-2345-6789',
       userType: UserType.EMPLOYEE,
       status: 'ACTIVE',
-      authorities: ['USER'],
+      authorities: [Authority.USER],
       createdAt: '2025-01-05T00:00:00Z'
     },
     {
@@ -39,7 +39,7 @@ const AdminUsers: React.FC = () => {
       phoneNumber: '010-3456-7890',
       userType: UserType.JOB_SEEKER,
       status: 'PENDING',
-      authorities: ['USER'],
+      authorities: [Authority.USER],
       createdAt: '2025-01-10T00:00:00Z'
     },
     {
@@ -49,7 +49,7 @@ const AdminUsers: React.FC = () => {
       phoneNumber: '010-4567-8901',
       userType: UserType.COMPANY,
       status: 'PENDING',
-      authorities: ['COMPANY', 'USER'],
+      authorities: [Authority.COMPANY, Authority.USER],
       companyName: '테스트협약사',
       createdAt: '2025-01-15T00:00:00Z'
     },
@@ -60,13 +60,13 @@ const AdminUsers: React.FC = () => {
       phoneNumber: '010-5678-9012',
       userType: UserType.EMPLOYEE,
       status: 'PENDING',
-      authorities: ['USER'],
+      authorities: [Authority.USER],
       createdAt: '2025-01-20T00:00:00Z'
     }
   ];
 
   useEffect(() => {
-    if (user?.userType === 'ADMIN') {
+    if (user?.userType === UserType.ADMIN) {
       loadUsers();
     }
   }, [user]);
@@ -170,7 +170,7 @@ const AdminUsers: React.FC = () => {
     return new Date(dateString).toLocaleDateString('ko-KR');
   };
 
-  if (user?.userType !== 'ADMIN') {
+  if (user?.userType !== UserType.ADMIN) {
     return (
       <div className="container mt-4">
         <div className="alert alert-danger">

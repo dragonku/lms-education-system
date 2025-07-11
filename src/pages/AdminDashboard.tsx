@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { courseApi, adminApi } from '../services/api';
-import { Course, Enrollment, User } from '../types';
+import { Course, Enrollment, User, UserType } from '../types';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -17,7 +17,7 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.userType === 'ADMIN') {
+    if (user?.userType === UserType.ADMIN) {
       loadDashboardData();
     }
   }, [user]);
@@ -47,7 +47,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  if (user?.userType !== 'ADMIN') {
+  if (user?.userType !== UserType.ADMIN) {
     return (
       <div className="container mt-4">
         <div className="alert alert-danger">

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
+import { UserType } from '../types';
 
 const DashboardContainer = styled.div`
   max-width: 1000px;
@@ -99,12 +100,12 @@ const InfoRow = styled.div`
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
 
-  const getUserTypeLabel = (userType: string) => {
+  const getUserTypeLabel = (userType: UserType) => {
     switch (userType) {
-      case 'ADMIN': return '관리자';
-      case 'COMPANY': return '협약사';
-      case 'EMPLOYEE': return '재직자';
-      case 'JOB_SEEKER': return '구직자';
+      case UserType.ADMIN: return '관리자';
+      case UserType.COMPANY: return '협약사';
+      case UserType.EMPLOYEE: return '재직자';
+      case UserType.JOB_SEEKER: return '구직자';
       default: return userType;
     }
   };

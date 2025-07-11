@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { courseApi } from '../services/api';
-import { Course, CourseStatus } from '../types';
+import { Course, CourseStatus, UserType } from '../types';
 
 const AdminCourses: React.FC = () => {
   const { user } = useAuth();
@@ -24,7 +24,7 @@ const AdminCourses: React.FC = () => {
   });
 
   useEffect(() => {
-    if (user?.userType === 'ADMIN') {
+    if (user?.userType === UserType.ADMIN) {
       loadCourses();
     }
   }, [user]);
@@ -159,7 +159,7 @@ const AdminCourses: React.FC = () => {
     return new Intl.NumberFormat('ko-KR').format(price);
   };
 
-  if (user?.userType !== 'ADMIN') {
+  if (user?.userType !== UserType.ADMIN) {
     return (
       <div className="container mt-4">
         <div className="alert alert-danger">

@@ -115,6 +115,61 @@ export interface EnrollmentRequest {
   userId: number;
 }
 
+// Board Types
+export enum BoardType {
+  NOTICE = 'NOTICE',
+  QNA = 'QNA',
+  FAQ = 'FAQ'
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  content: string;
+  boardType: BoardType;
+  isNotice: boolean;
+  isSecret: boolean;
+  viewCount: number;
+  authorName: string;
+  authorId: number;
+  attachments: FileAttachment[];
+  commentCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FileAttachment {
+  id: number;
+  originalFileName: string;
+  downloadUrl: string;
+  fileSize: number;
+  contentType: string;
+  createdAt: string;
+}
+
+export interface PostRequest {
+  title: string;
+  content: string;
+  boardType: BoardType;
+  isNotice?: boolean;
+  isSecret?: boolean;
+}
+
+export interface PostListRequest {
+  page?: number;
+  size?: number;
+  keyword?: string;
+}
+
+export interface PostListResponse {
+  posts: Post[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
 // API Response Type
 export interface ApiResponse<T> {
   data?: T;

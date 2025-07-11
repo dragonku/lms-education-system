@@ -23,6 +23,12 @@ spring:
       hibernate:
         format_sql: true
   
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+  
   # Security Configuration
   security:
     user:
@@ -45,6 +51,12 @@ logging:
     com.lms.backend: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
+
+# File Upload Configuration
+file:
+  upload:
+    directory: uploads
+    max-size: 10MB
 
 ---
 spring:

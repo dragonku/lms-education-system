@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { courseApi, adminApi } from '../services/api';
-import { Enrollment, EnrollmentStatus } from '../types';
+import { Enrollment, EnrollmentStatus, UserType, Authority } from '../types';
 
 const AdminEnrollments: React.FC = () => {
   const { user } = useAuth();
@@ -39,9 +39,9 @@ const AdminEnrollments: React.FC = () => {
         email: 'employee@test.com',
         name: '김재직',
         phoneNumber: '010-2345-6789',
-        userType: 'EMPLOYEE' as any,
+        userType: UserType.EMPLOYEE,
         status: 'ACTIVE',
-        authorities: ['USER']
+        authorities: [Authority.USER]
       }
     },
     {
@@ -72,9 +72,9 @@ const AdminEnrollments: React.FC = () => {
         email: 'jobseeker@test.com',
         name: '이구직',
         phoneNumber: '010-3456-7890',
-        userType: 'JOB_SEEKER' as any,
+        userType: UserType.JOB_SEEKER,
         status: 'ACTIVE',
-        authorities: ['USER']
+        authorities: [Authority.USER]
       }
     },
     {
@@ -104,16 +104,16 @@ const AdminEnrollments: React.FC = () => {
         email: 'company@test.com',
         name: '박협약',
         phoneNumber: '010-4567-8901',
-        userType: 'COMPANY' as any,
+        userType: UserType.COMPANY,
         status: 'ACTIVE',
-        authorities: ['COMPANY', 'USER'],
+        authorities: [Authority.COMPANY, Authority.USER],
         companyName: '테스트협약사'
       }
     }
   ];
 
   useEffect(() => {
-    if (user?.userType === 'ADMIN') {
+    if (user?.userType === UserType.ADMIN) {
       loadEnrollments();
     }
   }, [user]);
@@ -200,7 +200,7 @@ const AdminEnrollments: React.FC = () => {
     return new Intl.NumberFormat('ko-KR').format(price);
   };
 
-  if (user?.userType !== 'ADMIN') {
+  if (user?.userType !== UserType.ADMIN) {
     return (
       <div className="container mt-4">
         <div className="alert alert-danger">

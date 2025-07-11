@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LoginRequest, SignupRequest, AuthResponse, User, UserType, Course, Enrollment, CourseListRequest, EnrollmentRequest } from '../types';
+import { LoginRequest, SignupRequest, AuthResponse, User, UserType, Authority, Course, Enrollment, CourseListRequest, EnrollmentRequest, Post, PostRequest, PostListRequest, PostListResponse, FileAttachment, BoardType } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 const USE_MOCK_API = true; // 임시로 mock API 사용
@@ -11,7 +11,7 @@ const MOCK_USERS = {
     email: 'admin@lms.com',
     name: '관리자',
     userType: UserType.ADMIN,
-    authorities: ['ADMIN', 'USER'],
+    authorities: [Authority.ADMIN, Authority.USER],
     status: 'ACTIVE'
   },
   'employee@test.com': {
@@ -19,7 +19,7 @@ const MOCK_USERS = {
     email: 'employee@test.com',
     name: '재직자',
     userType: UserType.EMPLOYEE,
-    authorities: ['USER'],
+    authorities: [Authority.USER],
     status: 'ACTIVE'
   },
   'jobseeker@test.com': {
@@ -27,7 +27,7 @@ const MOCK_USERS = {
     email: 'jobseeker@test.com',
     name: '구직자',
     userType: UserType.JOB_SEEKER,
-    authorities: ['USER'],
+    authorities: [Authority.USER],
     status: 'ACTIVE'
   },
   'company@test.com': {
@@ -620,6 +620,85 @@ export const adminApi = {
       throw error;
     }
   }
+};
+
+// Board API
+export const boardApi = {
+  getPosts: async (boardType: string, params: PostListRequest = {}): Promise<PostListResponse> => {
+    const response = await api.get<PostListResponse>(`/board/${boardType}`, { params });
+    return response.data;
+  },
+
+  getPost: async (boardType: string, id: number): Promise<Post> => {
+    const response = await api.get<Post>(`/board/${boardType}/${id}`);
+    return response.data;
+  },
+
+  createPost: async (boardType: string, postData: PostRequest): Promise<Post> => {
+    const response = await api.post<Post>(`/board/${boardType}`, postData);
+    return response.data;
+  },
+
+  updatePost: async (boardType: string, id: number, postData: PostRequest): Promise<Post> => {
+    const response = await api.put<Post>(`/board/${boardType}/${id}`, postData);
+    return response.data;
+  },
+
+  deletePost: async (boardType: string, id: number): Promise<{ message: string }> => {
+    const response = await api.delete<{ message: string }>(`/board/${boardType}/${id}`);
+    return response.data;
+  },
+
+  getNotices: async (boardType: string): Promise<Post[]> => {
+    const response = await api.get<Post[]>(`/board/${boardType}/notices`);
+    return response.data;
+  },
+
+  getBoardStats: async (boardType: string): Promise<{ totalPosts: number; boardType: string; boardTypeName: string }> => {
+    const response = await api.get(`/board/${boardType}/stats`);
+    return response.data;
+  }
+};
+
+// File Upload API
+export const fileApi = {
+  uploadFile: async (file: File, postId: number): Promise<FileAttachment> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('postId', postId.toString());
+    
+    const response = await api.post<FileAttachment>('/files/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  uploadFiles: async (files: File[], postId: number): Promise<FileAttachment[]> => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+    formData.append('postId', postId.toString());
+    
+    const response = await api.post<FileAttachment[]>('/files/upload/multiple', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  downloadFile: async (fileId: number): Promise<Blob> => {
+    const response = await api.get(`/files/${fileId}/download`, {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  deleteFile: async (fileId: number): Promise<{ message: string }> => {
+    const response = await api.delete<{ message: string }>(`/files/${fileId}`);
+    return response.data;
+  },
 };
 
 // Health API
