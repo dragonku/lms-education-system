@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LoginRequest, SignupRequest, AuthResponse, User, UserType, Authority, Course, Enrollment, CourseListRequest, EnrollmentRequest, Post, PostRequest, PostListRequest, PostListResponse, FileAttachment, BoardType } from '../types';
+import { LoginRequest, SignupRequest, AuthResponse, User, UserType, Authority, Course, Enrollment, CourseListRequest, EnrollmentRequest, Post, PostRequest, PostListRequest, PostListResponse, FileAttachment, BoardType, PostDetailResponse, PostResponse, PostCreateRequest, PostUpdateRequest, CommentCreateRequest, CommentUpdateRequest, CommentResponse } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 const USE_MOCK_API = true; // 임시로 mock API 사용
@@ -656,6 +656,32 @@ export const boardApi = {
 
   getBoardStats: async (boardType: string): Promise<{ totalPosts: number; boardType: string; boardTypeName: string }> => {
     const response = await api.get(`/board/${boardType}/stats`);
+    return response.data;
+  },
+
+  // Notice Board specific APIs
+  getNoticePosts: async (params: { page?: number; size?: number; keyword?: string } = {}): Promise<PostListResponse> => {
+    const response = await api.get<PostListResponse>('/board/notice', { params });
+    return response.data;
+  },
+
+  getNoticePost: async (id: number): Promise<PostDetailResponse> => {
+    const response = await api.get<PostDetailResponse>(`/board/notice/${id}`);
+    return response.data;
+  },
+
+  createNoticePost: async (postData: PostCreateRequest): Promise<PostResponse> => {
+    const response = await api.post<PostResponse>('/board/notice', postData);
+    return response.data;
+  },
+
+  updateNoticePost: async (id: number, postData: PostUpdateRequest): Promise<PostResponse> => {
+    const response = await api.put<PostResponse>(`/board/notice/${id}`, postData);
+    return response.data;
+  },
+
+  deleteNoticePost: async (id: number): Promise<{ message: string }> => {
+    const response = await api.delete<{ message: string }>(`/board/notice/${id}`);
     return response.data;
   }
 };

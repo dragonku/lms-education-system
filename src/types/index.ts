@@ -170,6 +170,75 @@ export interface PostListResponse {
   hasPrevious: boolean;
 }
 
+export interface Comment {
+  id: number;
+  content: string;
+  authorName: string;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PostDetailResponse {
+  id: number;
+  title: string;
+  content: string;
+  boardType: BoardType;
+  isNotice: boolean;
+  isSecret: boolean;
+  viewCount: number;
+  authorName: string;
+  authorId: number;
+  attachments: FileAttachment[];
+  comments: Comment[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PostResponse {
+  id: number;
+  title: string;
+  content: string;
+  boardType: BoardType;
+  isNotice: boolean;
+  isSecret: boolean;
+  viewCount: number;
+  authorName: string;
+  authorId: number;
+  commentCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PostCreateRequest {
+  title: string;
+  content: string;
+  isSecret?: boolean;
+}
+
+export interface PostUpdateRequest {
+  title: string;
+  content: string;
+  isSecret?: boolean;
+}
+
+export interface CommentCreateRequest {
+  content: string;
+}
+
+export interface CommentUpdateRequest {
+  content: string;
+}
+
+export interface CommentResponse {
+  id: number;
+  content: string;
+  authorName: string;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // API Response Type
 export interface ApiResponse<T> {
   data?: T;

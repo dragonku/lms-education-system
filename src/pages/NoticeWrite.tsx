@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { boardApi } from '../services/api';
-import { Post, PostRequest, BoardType, Authority } from '../types';
+import { Post, PostDetailResponse, PostCreateRequest, PostUpdateRequest, BoardType, Authority } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 
 const NoticeWrite: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const isEdit = !!id;
   
-  const [formData, setFormData] = useState<PostRequest>({
+  const [formData, setFormData] = useState<PostCreateRequest>({
     title: '',
     content: '',
-    boardType: BoardType.NOTICE,
-    isNotice: false,
     isSecret: false
   });
   const [loading, setLoading] = useState(false);
@@ -44,12 +42,10 @@ const NoticeWrite: React.FC = () => {
       setInitialLoading(true);
       if (!id) return;
       
-      const post = await boardApi.getPost(BoardType.NOTICE, parseInt(id));
+      const post = await boardApi.getNoticePost(parseInt(id));
       setFormData({
         title: post.title,
         content: post.content,
-        boardType: post.boardType,
-        isNotice: post.isNotice,
         isSecret: post.isSecret
       });
     } catch (err: any) {
@@ -93,11 +89,11 @@ const NoticeWrite: React.FC = () => {
       setError(null);
 
       if (isEdit && id) {
-        await boardApi.updatePost(BoardType.NOTICE, parseInt(id), formData);
+        await boardApi.updateNoticePost(parseInt(id), formData);
         alert('게시글이 수정되었습니다.');
         navigate(`/board/notice/${id}`);
       } else {
-        const newPost = await boardApi.createPost(BoardType.NOTICE, formData);
+        const newPost = await boardApi.createNoticePost(formData);
         alert('게시글이 등록되었습니다.');
         navigate(`/board/notice/${newPost.id}`);
       }
@@ -178,26 +174,6 @@ const NoticeWrite: React.FC = () => {
                   />
                 </div>
 
-                {/* 옵션 */}
-                <div className="mb-3">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="isNotice"
-                      name="isNotice"
-                      checked={formData.isNotice}
-                      onChange={handleInputChange}
-                    />
-                    <label className="form-check-label" htmlFor="isNotice">
-                      <i className="bi bi-pin text-warning me-1"></i>
-                      중요 공지사항으로 설정
-                    </label>
-                    <small className="form-text text-muted d-block">
-                      체크하면 게시판 상단에 고정됩니다.
-                    </small>
-                  </div>
-                </div>
 
                 {/* 내용 */}
                 <div className="mb-3">

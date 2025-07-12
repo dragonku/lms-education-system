@@ -26,7 +26,7 @@ const NoticeBoard: React.FC = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response: PostListResponse = await boardApi.getPosts(BoardType.NOTICE, {
+      const response: PostListResponse = await boardApi.getNoticePosts({
         page: currentPage,
         size: 10,
         keyword: searchKeyword || undefined

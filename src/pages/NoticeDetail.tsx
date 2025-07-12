@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { boardApi } from '../services/api';
-import { Post, BoardType, Authority } from '../types';
+import { Post, PostDetailResponse, BoardType, Authority } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 
 const NoticeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<PostDetailResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -26,7 +26,7 @@ const NoticeDetail: React.FC = () => {
       setLoading(true);
       if (!id) return;
       
-      const postData = await boardApi.getPost(BoardType.NOTICE, parseInt(id));
+      const postData = await boardApi.getNoticePost(parseInt(id));
       setPost(postData);
     } catch (err: any) {
       setError(err.response?.data?.message || '게시글을 불러오는데 실패했습니다.');
@@ -41,7 +41,7 @@ const NoticeDetail: React.FC = () => {
     }
 
     try {
-      await boardApi.deletePost(BoardType.NOTICE, post.id);
+      await boardApi.deleteNoticePost(post.id);
       alert('게시글이 삭제되었습니다.');
       navigate('/board/notice');
     } catch (err: any) {
@@ -135,10 +135,10 @@ const NoticeDetail: React.FC = () => {
                       <i className="bi bi-eye me-1"></i>
                       조회 {post.viewCount}
                     </span>
-                    {post.commentCount > 0 && (
+                    {post.comments && post.comments.length > 0 && (
                       <span>
                         <i className="bi bi-chat me-1"></i>
-                        댓글 {post.commentCount}
+                        댓글 {post.comments.length}
                       </span>
                     )}
                   </div>
