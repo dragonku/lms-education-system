@@ -2,7 +2,7 @@ import axios from 'axios';
 import { LoginRequest, SignupRequest, AuthResponse, User, UserType, Authority, Course, Enrollment, CourseListRequest, EnrollmentRequest, Post, PostRequest, PostListRequest, PostListResponse, FileAttachment, BoardType, PostDetailResponse, PostResponse, PostCreateRequest, PostUpdateRequest, CommentCreateRequest, CommentUpdateRequest, CommentResponse } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
-const USE_MOCK_API = true; // 임시로 mock API 사용
+const USE_MOCK_API = true; // Mock API 사용 (개발/테스트용)
 
 // Mock users for testing
 const MOCK_USERS = {
@@ -186,6 +186,61 @@ const mockCourseApi = {
     }
     
     return course;
+  },
+
+  createCourse: async (courseData: any): Promise<Course> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const newCourse: Course = {
+      ...courseData,
+      id: Date.now(),
+      currentEnrollment: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    MOCK_COURSES.push(newCourse);
+    return newCourse;
+  },
+
+  updateCourse: async (id: number, courseData: any): Promise<Course> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const courseIndex = MOCK_COURSES.findIndex(c => c.id === id);
+    if (courseIndex === -1) {
+      throw {
+        response: {
+          status: 404,
+          data: { message: '과정을 찾을 수 없습니다.' }
+        }
+      };
+    }
+    
+    const updatedCourse = {
+      ...MOCK_COURSES[courseIndex],
+      ...courseData,
+      updatedAt: new Date().toISOString()
+    };
+    
+    MOCK_COURSES[courseIndex] = updatedCourse;
+    return updatedCourse;
+  },
+
+  deleteCourse: async (id: number): Promise<{ message: string }> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const courseIndex = MOCK_COURSES.findIndex(c => c.id === id);
+    if (courseIndex === -1) {
+      throw {
+        response: {
+          status: 404,
+          data: { message: '과정을 찾을 수 없습니다.' }
+        }
+      };
+    }
+    
+    MOCK_COURSES.splice(courseIndex, 1);
+    return { message: '과정이 삭제되었습니다.' };
   },
 
   enrollCourse: async (request: EnrollmentRequest): Promise<Enrollment> => {
@@ -422,6 +477,21 @@ export const courseApi = USE_MOCK_API ? mockCourseApi : {
 
   getCourse: async (id: number): Promise<Course> => {
     const response = await api.get<Course>(`/courses/${id}`);
+    return response.data;
+  },
+
+  createCourse: async (courseData: any): Promise<Course> => {
+    const response = await api.post<Course>('/courses', courseData);
+    return response.data;
+  },
+
+  updateCourse: async (id: number, courseData: any): Promise<Course> => {
+    const response = await api.put<Course>(`/courses/${id}`, courseData);
+    return response.data;
+  },
+
+  deleteCourse: async (id: number): Promise<{ message: string }> => {
+    const response = await api.delete<{ message: string }>(`/courses/${id}`);
     return response.data;
   },
 

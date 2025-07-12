@@ -44,22 +44,13 @@ const AdminCourses: React.FC = () => {
   const handleCreateCourse = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // 실제로는 API 호출
-      // await courseApi.createCourse(formData);
-      
-      const newCourse: Course = {
-        ...formData,
-        id: Date.now(),
-        currentEnrollment: 0,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      
-      setCourses([...courses, newCourse]);
+      const createdCourse = await courseApi.createCourse(formData);
+      setCourses([...courses, createdCourse]);
       setShowCreateForm(false);
       resetForm();
       alert('과정이 생성되었습니다.');
     } catch (error) {
+      console.error('Failed to create course:', error);
       alert('과정 생성 중 오류가 발생했습니다.');
     }
   };
@@ -69,20 +60,13 @@ const AdminCourses: React.FC = () => {
     if (!editingCourse) return;
     
     try {
-      // 실제로는 API 호출
-      // await courseApi.updateCourse(editingCourse.id, formData);
-      
-      const updatedCourse = {
-        ...editingCourse,
-        ...formData,
-        updatedAt: new Date().toISOString()
-      };
-      
+      const updatedCourse = await courseApi.updateCourse(editingCourse.id, formData);
       setCourses(courses.map(c => c.id === editingCourse.id ? updatedCourse : c));
       setEditingCourse(null);
       resetForm();
       alert('과정이 수정되었습니다.');
     } catch (error) {
+      console.error('Failed to update course:', error);
       alert('과정 수정 중 오류가 발생했습니다.');
     }
   };
@@ -93,12 +77,11 @@ const AdminCourses: React.FC = () => {
     }
     
     try {
-      // 실제로는 API 호출
-      // await courseApi.deleteCourse(courseId);
-      
+      await courseApi.deleteCourse(courseId);
       setCourses(courses.filter(c => c.id !== courseId));
       alert('과정이 삭제되었습니다.');
     } catch (error) {
+      console.error('Failed to delete course:', error);
       alert('과정 삭제 중 오류가 발생했습니다.');
     }
   };
