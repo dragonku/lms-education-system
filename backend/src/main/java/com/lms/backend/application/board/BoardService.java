@@ -157,6 +157,34 @@ public class BoardService {
         commentRepository.delete(comment);
     }
     
+    // Notice Board Methods
+    public Page<PostResponse> getNoticePosts(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> posts;
+        
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            posts = postRepository.findByBoardTypeAndKeywordContaining(BoardType.NOTICE, keyword, pageable);
+        } else {
+            posts = postRepository.findByBoardTypeOrderByCreatedAtDesc(BoardType.NOTICE, pageable);
+        }
+        
+        return posts.map(post -> convertToPostResponse(post, true)); // 공지사항은 모두 볼 수 있음
+    }
+    
+    public PostResponse createNoticePost(PostCreateRequest request, Long userId) {
+        User author = getUserById(userId);
+        
+        // 관리자만 공지사항 작성 가능
+        if (!author.getAuthorities().contains(Authority.ADMIN)) {
+            throw new AccessDeniedException("공지사항을 작성할 권한이 없습니다.");
+        }
+        
+        Post post = Post.createNotice(request.getTitle(), request.getContent(), author);
+        Post savedPost = postRepository.save(post);
+        
+        return convertToPostResponse(savedPost, true);
+    }
+    
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));

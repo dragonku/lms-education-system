@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.lms.backend.application.board.BoardServiceTest" time="1.015" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.lms.backend.application.user.UserServiceTest" time="0.022" tests="7" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -52,11 +52,11 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="createQnAPost_withNonExistentUser_shouldThrowException" classname="com.lms.backend.application.board.BoardServiceTest" time="0.953"/>
-  <testcase name="getQnAPosts_shouldReturnPagedPosts" classname="com.lms.backend.application.board.BoardServiceTest" time="0.009"/>
-  <testcase name="createQnAPost_withSecret_shouldCreateSecretPost" classname="com.lms.backend.application.board.BoardServiceTest" time="0.004"/>
-  <testcase name="createQnAPost_shouldCreatePost" classname="com.lms.backend.application.board.BoardServiceTest" time="0.003"/>
-  <testcase name="deletePost_byAuthor_shouldDeletePost" classname="com.lms.backend.application.board.BoardServiceTest" time="0.006"/>
-  <testcase name="deletePost_byNonAuthor_shouldThrowException" classname="com.lms.backend.application.board.BoardServiceTest" time="0.006"/>
-  <testcase name="getQnAPosts_withKeyword_shouldReturnFilteredPosts" classname="com.lms.backend.application.board.BoardServiceTest" time="0.005"/>
+  <testcase name="findByEmail_ShouldThrowException_WhenUserNotFound" classname="com.lms.backend.application.user.UserServiceTest" time="0"/>
+  <testcase name="findByEmail_ShouldReturnUser_WhenUserExists" classname="com.lms.backend.application.user.UserServiceTest" time="0"/>
+  <testcase name="signup_ShouldThrowException_WhenEmailAlreadyExists" classname="com.lms.backend.application.user.UserServiceTest" time="0"/>
+  <testcase name="signup_ShouldCreateUserSuccessfully_WhenValidRequest" classname="com.lms.backend.application.user.UserServiceTest" time="0.004"/>
+  <testcase name="signup_ShouldCreateCompanyUser_WhenCompanyType" classname="com.lms.backend.application.user.UserServiceTest" time="0.007"/>
+  <testcase name="approveUser_ShouldApproveUserSuccessfully" classname="com.lms.backend.application.user.UserServiceTest" time="0.004"/>
+  <testcase name="signup_ShouldThrowException_WhenCompanyNameMissing" classname="com.lms.backend.application.user.UserServiceTest" time="0.003"/>
 </testsuite>

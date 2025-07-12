@@ -277,6 +277,78 @@ public class BoardController {
         return ResponseEntity.ok(Map.of("message", "댓글이 성공적으로 삭제되었습니다."));
     }
     
+    // Notice 게시판 전용 엔드포인트
+    @GetMapping("/notice")
+    public ResponseEntity<Map<String, Object>> getNoticePosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword) {
+        
+        Page<PostResponse> posts = boardService.getNoticePosts(page, size, keyword);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("posts", posts.getContent());
+        response.put("currentPage", posts.getNumber());
+        response.put("totalPages", posts.getTotalPages());
+        response.put("totalElements", posts.getTotalElements());
+        response.put("hasNext", posts.hasNext());
+        response.put("hasPrevious", posts.hasPrevious());
+        
+        return ResponseEntity.ok(response);
+    }
+    
+    @GetMapping("/notice/{id}")
+    public ResponseEntity<PostDetailResponse> getNoticePost(@PathVariable Long id) {
+        PostDetailResponse post = boardService.getPostDetail(id, null); // 공지사항은 누구나 볼 수 있음
+        return ResponseEntity.ok(post);
+    }
+    
+    @PostMapping("/notice")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PostResponse> createNoticePost(
+            @Valid @RequestBody PostCreateRequest request,
+            Authentication authentication) {
+        
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
+        PostResponse post = boardService.createNoticePost(request, currentUser.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(post);
+    }
+    
+    @PutMapping("/notice/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PostResponse> updateNoticePost(
+            @PathVariable Long id,
+            @Valid @RequestBody PostUpdateRequest request,
+            Authentication authentication) {
+        
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
+        PostResponse post = boardService.updatePost(id, request, currentUser.getId());
+        return ResponseEntity.ok(post);
+    }
+    
+    @DeleteMapping("/notice/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, String>> deleteNoticePost(
+            @PathVariable Long id,
+            Authentication authentication) {
+        
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
+        boardService.deletePost(id, currentUser.getId());
+        return ResponseEntity.ok(Map.of("message", "공지사항이 성공적으로 삭제되었습니다."));
+    }
+    
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
