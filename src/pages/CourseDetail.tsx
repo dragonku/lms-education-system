@@ -214,14 +214,33 @@ const CourseDetail: React.FC = () => {
       <div className="row">
         <div className="col-lg-8">
           <div className="card">
-            {course.imageUrl && (
-              <img
-                src={course.imageUrl}
-                className="card-img-top"
-                alt={course.title}
-                style={{ height: '300px', objectFit: 'cover' }}
-              />
-            )}
+            <div className="position-relative" style={{ height: '300px', backgroundColor: '#f8f9fa' }}>
+              {course.imageUrl ? (
+                <img
+                  src={course.imageUrl}
+                  className="card-img-top"
+                  alt={course.title}
+                  style={{ height: '300px', objectFit: 'cover' }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <div 
+                className="d-flex align-items-center justify-content-center h-100"
+                style={{ display: course.imageUrl ? 'none' : 'flex' }}
+              >
+                <div className="text-center text-muted">
+                  <i className="bi bi-book" style={{ fontSize: '4rem' }}></i>
+                  <div className="mt-3">
+                    <h4>{course.category}</h4>
+                    <small>과정 이미지</small>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-start mb-3">
                 <h1 className="card-title">{course.title}</h1>

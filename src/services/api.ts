@@ -55,7 +55,7 @@ const MOCK_COURSES: Course[] = [
     duration: '8주',
     price: 350000,
     status: 'ACTIVE',
-    imageUrl: 'https://via.placeholder.com/300x200?text=React+Course',
+    imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=200&fit=crop&crop=center',
     createdAt: '2025-07-01T00:00:00Z',
     updatedAt: '2025-07-01T00:00:00Z'
   },
@@ -72,7 +72,7 @@ const MOCK_COURSES: Course[] = [
     duration: '10주',
     price: 420000,
     status: 'ACTIVE',
-    imageUrl: 'https://via.placeholder.com/300x200?text=Spring+Boot',
+    imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=300&h=200&fit=crop&crop=center',
     createdAt: '2025-07-01T00:00:00Z',
     updatedAt: '2025-07-01T00:00:00Z'
   },
@@ -89,7 +89,7 @@ const MOCK_COURSES: Course[] = [
     duration: '12주',
     price: 480000,
     status: 'FULL',
-    imageUrl: 'https://via.placeholder.com/300x200?text=Python+Data',
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=200&fit=crop&crop=center',
     createdAt: '2025-07-01T00:00:00Z',
     updatedAt: '2025-07-01T00:00:00Z'
   },
@@ -106,7 +106,7 @@ const MOCK_COURSES: Course[] = [
     duration: '8주',
     price: 320000,
     status: 'ACTIVE',
-    imageUrl: 'https://via.placeholder.com/300x200?text=UI+UX+Design',
+    imageUrl: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=300&h=200&fit=crop&crop=center',
     createdAt: '2025-07-01T00:00:00Z',
     updatedAt: '2025-07-01T00:00:00Z'
   },
@@ -123,7 +123,7 @@ const MOCK_COURSES: Course[] = [
     duration: '14주',
     price: 550000,
     status: 'ACTIVE',
-    imageUrl: 'https://via.placeholder.com/300x200?text=DevOps',
+    imageUrl: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=300&h=200&fit=crop&crop=center',
     createdAt: '2025-07-01T00:00:00Z',
     updatedAt: '2025-07-01T00:00:00Z'
   }
