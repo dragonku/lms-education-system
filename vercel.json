@@ -1,4 +1,8 @@
 {
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "build",
+  "installCommand": "npm install",
+  "devCommand": "npm start",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -15,5 +19,8 @@
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "CI": "false"
+  }
 }

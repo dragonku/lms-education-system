@@ -37,9 +37,8 @@ coverage/
 .DS_Store
 Thumbs.db
 
-# Source files (only build output needed)
+# Source files after build (keep public/ for build process)
 src/
-public/
 tsconfig.json
 package-lock.json
 
