@@ -1,7 +1,6 @@
 # Backend and unused files
 backend/
 frontend/
-dist/
 start.sh
 stop.sh
 deploy.sh
@@ -14,18 +13,13 @@ CONTRIBUTING.md
 LICENSE
 README*.md
 
-# Config files not needed for frontend deployment
+# Version control
 .github/
 .git/
 
-# Development files
-node_modules/
+# Development and test files
 coverage/
 .nyc_output
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # IDE files
 .vscode/
@@ -36,11 +30,6 @@ coverage/
 # OS files
 .DS_Store
 Thumbs.db
-
-# Source files after build (keep public/ for build process)
-src/
-tsconfig.json
-package-lock.json
 
 # Logs
 logs/
