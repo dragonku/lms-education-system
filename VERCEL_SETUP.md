@@ -1,47 +1,60 @@
-# 🚀 Vercel 배포 설정 가이드
+# 🚀 Vercel 자동 배포 설정 가이드
 
-## 1단계: Vercel 계정 설정
+GitHub Actions를 통한 Vercel 자동 배포를 설정하기 위한 단계별 가이드입니다.
 
-1. https://vercel.com 접속
-2. GitHub 계정으로 로그인
-3. 팀/개인 계정 선택
+## 1단계: Vercel 계정 및 프로젝트 설정
 
-## 2단계: 프론트엔드 배포
-
-### 프로젝트 Import
-1. "New Project" 클릭
-2. GitHub에서 `lms-education-system` 저장소 선택
-3. "Import" 클릭
-
-### 빌드 설정
+### 1.1 Vercel 로그인
+```bash
+vercel login
 ```
-Framework Preset: Create React App
-Root Directory: frontend
-Build Command: npm run build
-Output Directory: build
-Install Command: npm install
-Development Command: npm start
+브라우저에서 GitHub 계정으로 Vercel에 로그인합니다.
+
+### 1.2 프로젝트 초기화
+```bash
+vercel
+```
+- 프로젝트를 배포할 때 묻는 질문에 답변:
+  - Link to existing project? **N**
+  - Project name: **lms-education-system**
+  - Directory: **./** (현재 디렉토리)
+  - Deploy? **N** (나중에 GitHub Actions로 배포)
+
+## 2단계: Vercel 토큰 및 프로젝트 정보 획득
+
+### 2.1 Vercel 토큰 생성
+1. [Vercel Dashboard](https://vercel.com/dashboard) 접속
+2. **Settings** → **Tokens** 이동
+3. **Create** 클릭하여 새 토큰 생성
+4. 토큰 이름: `GitHub Actions`
+5. 생성된 토큰을 복사 (한 번만 표시됨)
+
+### 2.2 프로젝트 ID 및 조직 ID 확인
+```bash
+vercel project ls
+```
+또는 프로젝트 루트에서:
+```bash
+cat .vercel/project.json
 ```
 
-### 환경 변수 설정
-Vercel 대시보드에서 Environment Variables 추가:
+## 3단계: GitHub Secrets 설정
 
-**Production 환경:**
-```
-Name: REACT_APP_API_URL
-Value: https://lms-backend-api.vercel.app/api
-```
+GitHub 저장소의 **Settings** → **Secrets and variables** → **Actions**에서 다음 secrets을 추가:
 
-**Preview 환경:**
+### 필수 Secrets:
 ```
-Name: REACT_APP_API_URL  
-Value: https://lms-backend-api-git-main.vercel.app/api
+VERCEL_TOKEN=vercel_token_value_here
+VERCEL_ORG_ID=team_id_or_username_here  
+VERCEL_PROJECT_ID=prj_xxxxxxxxxxxxxxxxxxxx
 ```
 
-**Development 환경:**
-```
-Name: REACT_APP_API_URL
-Value: http://localhost:3000/api
+### 예시:
+```bash
+# GitHub CLI 사용 (권장)
+gh secret set VERCEL_TOKEN --body "vercel_token_value_here"
+gh secret set VERCEL_ORG_ID --body "team_id_or_username_here"
+gh secret set VERCEL_PROJECT_ID --body "prj_xxxxxxxxxxxxxxxxxxxx"
 ```
 
 ## 3단계: 백엔드 배포 (옵션)

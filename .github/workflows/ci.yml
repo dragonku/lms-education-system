@@ -163,4 +163,19 @@ jobs:
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
         working-directory: ./
-        scope: ${{ secrets.VERCEL_ORG_ID }}
+        github-comment: true
+        github-deployment: true
+      id: vercel-deploy
+    
+    - name: Comment deployment URL
+      uses: actions/github-script@v6
+      if: success()
+      with:
+        script: |
+          const deploymentUrl = '${{ steps.vercel-deploy.outputs.preview-url }}';
+          github.rest.repos.createCommitComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+            body: `🚀 **Deployed successfully!**\n\n**Live URL:** ${deploymentUrl}\n\n✅ Production deployment completed via GitHub Actions`
+          });
