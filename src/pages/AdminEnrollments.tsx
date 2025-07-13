@@ -144,7 +144,9 @@ const AdminEnrollments: React.FC = () => {
       ));
       alert('수강신청이 승인되었습니다.');
     } catch (error) {
-      alert('승인 처리 중 오류가 발생했습니다.');
+      console.error('Enrollment approval error:', error);
+      const errorMessage = error instanceof Error ? error.message : '승인 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 
@@ -160,7 +162,9 @@ const AdminEnrollments: React.FC = () => {
       ));
       alert('수강신청이 거절되었습니다.');
     } catch (error) {
-      alert('거절 처리 중 오류가 발생했습니다.');
+      console.error('Enrollment rejection error:', error);
+      const errorMessage = error instanceof Error ? error.message : '거절 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 

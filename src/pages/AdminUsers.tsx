@@ -93,7 +93,9 @@ const AdminUsers: React.FC = () => {
       ));
       alert('사용자가 승인되었습니다.');
     } catch (error) {
-      alert('승인 처리 중 오류가 발생했습니다.');
+      console.error('User approval error:', error);
+      const errorMessage = error instanceof Error ? error.message : '승인 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 
@@ -109,7 +111,9 @@ const AdminUsers: React.FC = () => {
       ));
       alert('사용자가 거절되었습니다.');
     } catch (error) {
-      alert('거절 처리 중 오류가 발생했습니다.');
+      console.error('User rejection error:', error);
+      const errorMessage = error instanceof Error ? error.message : '거절 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 
@@ -125,7 +129,9 @@ const AdminUsers: React.FC = () => {
       ));
       alert('사용자가 정지되었습니다.');
     } catch (error) {
-      alert('정지 처리 중 오류가 발생했습니다.');
+      console.error('User suspension error:', error);
+      const errorMessage = error instanceof Error ? error.message : '정지 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 

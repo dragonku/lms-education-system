@@ -573,7 +573,7 @@ export const adminApi = {
 
   approveUser: async (userId: number): Promise<void> => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/approve`, {
         method: 'POST',
         headers: {
@@ -583,7 +583,8 @@ export const adminApi = {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to approve user');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '사용자 승인에 실패했습니다.');
       }
     } catch (error) {
       console.error('Approve user error:', error);
@@ -593,7 +594,7 @@ export const adminApi = {
 
   rejectUser: async (userId: number): Promise<void> => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/reject`, {
         method: 'POST',
         headers: {
@@ -603,7 +604,8 @@ export const adminApi = {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to reject user');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '사용자 거절에 실패했습니다.');
       }
     } catch (error) {
       console.error('Reject user error:', error);
@@ -613,7 +615,7 @@ export const adminApi = {
 
   suspendUser: async (userId: number): Promise<void> => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/suspend`, {
         method: 'POST',
         headers: {
@@ -623,7 +625,8 @@ export const adminApi = {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to suspend user');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '사용자 정지에 실패했습니다.');
       }
     } catch (error) {
       console.error('Suspend user error:', error);
@@ -633,7 +636,7 @@ export const adminApi = {
 
   deleteUser: async (userId: number): Promise<void> => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
         method: 'DELETE',
         headers: {
@@ -643,7 +646,8 @@ export const adminApi = {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to delete user');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '사용자 삭제에 실패했습니다.');
       }
     } catch (error) {
       console.error('Delete user error:', error);
@@ -653,7 +657,7 @@ export const adminApi = {
 
   approveEnrollment: async (enrollmentId: number): Promise<void> => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/enrollments/${enrollmentId}/approve`, {
         method: 'POST',
         headers: {
@@ -663,7 +667,8 @@ export const adminApi = {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to approve enrollment');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '수강신청 승인에 실패했습니다.');
       }
     } catch (error) {
       console.error('Approve enrollment error:', error);
@@ -673,7 +678,7 @@ export const adminApi = {
 
   rejectEnrollment: async (enrollmentId: number): Promise<void> => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/enrollments/${enrollmentId}/reject`, {
         method: 'POST',
         headers: {
@@ -683,7 +688,8 @@ export const adminApi = {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to reject enrollment');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '수강신청 거절에 실패했습니다.');
       }
     } catch (error) {
       console.error('Reject enrollment error:', error);
