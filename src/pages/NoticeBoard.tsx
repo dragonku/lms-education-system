@@ -26,16 +26,24 @@ const NoticeBoard: React.FC = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response: PostListResponse = await boardApi.getNoticePosts({
         page: currentPage,
         size: 10,
         keyword: searchKeyword || undefined
       });
       
-      setPosts(response.posts);
-      setTotalPages(response.totalPages);
+      setPosts(response.posts || []);
+      setTotalPages(response.totalPages || 0);
     } catch (err: any) {
-      setError(err.response?.data?.message || '게시글을 불러오는데 실패했습니다.');
+      console.error('Error fetching notice posts:', err);
+      // 404 에러나 빈 결과는 에러로 처리하지 않음
+      if (err.response?.status === 404 || err.response?.status === 204) {
+        setPosts([]);
+        setTotalPages(0);
+      } else {
+        setError(err.response?.data?.message || '게시글을 불러오는데 실패했습니다.');
+      }
     } finally {
       setLoading(false);
     }

@@ -58,12 +58,19 @@ const QnABoard: React.FC = () => {
       const response = await api.get(`/board/qna?${params}`);
       const data: PostsResponse = response.data;
       
-      setPosts(data.posts);
-      setTotalPages(data.totalPages);
-      setTotalElements(data.totalElements);
-    } catch (err) {
-      setError('게시글을 불러오는 중 오류가 발생했습니다.');
+      setPosts(data.posts || []);
+      setTotalPages(data.totalPages || 0);
+      setTotalElements(data.totalElements || 0);
+    } catch (err: any) {
       console.error('Error fetching posts:', err);
+      // 404 에러나 빈 결과는 에러로 처리하지 않음
+      if (err.response?.status === 404 || err.response?.status === 204) {
+        setPosts([]);
+        setTotalPages(0);
+        setTotalElements(0);
+      } else {
+        setError('게시글을 불러오는 중 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }
@@ -216,8 +223,12 @@ const QnABoard: React.FC = () => {
                     <tbody>
                       {posts.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="text-center py-4">
-                            등록된 게시글이 없습니다.
+                          <td colSpan={6} className="text-center py-5">
+                            <div>
+                              <i className="bi bi-chat-square-text display-1 text-muted"></i>
+                              <p className="text-muted mt-3 mb-2">등록된 Q&A가 없습니다.</p>
+                              <small className="text-muted">궁금한 점이 있으시면 질문을 남겨보세요!</small>
+                            </div>
                           </td>
                         </tr>
                       ) : (
