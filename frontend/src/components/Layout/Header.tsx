@@ -100,7 +100,7 @@ const Header: React.FC = () => {
 
   const getUserTypeLabel = (userType: string) => {
     switch (userType) {
-      case 'ADMIN': return '관리자';
+      case 'ADMIN': return 'Admin';
       case 'COMPANY': return '협약사';
       case 'EMPLOYEE': return '재직자';
       case 'JOB_SEEKER': return '구직자';
