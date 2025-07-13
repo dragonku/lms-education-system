@@ -58,22 +58,6 @@ const UserName = styled.span`
   font-weight: 500;
 `;
 
-const UserBadge = styled.span<{ userType: UserType }>`
-  background-color: ${props => {
-    switch (props.userType) {
-      case UserType.ADMIN: return '#e74c3c';
-      case UserType.COMPANY: return '#f39c12';
-      case UserType.EMPLOYEE: return '#27ae60';
-      case UserType.JOB_SEEKER: return '#3498db';
-      default: return '#95a5a6';
-    }
-  }};
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-`;
 
 const LogoutButton = styled.button`
   background: transparent;
@@ -99,15 +83,6 @@ const Header: React.FC = () => {
     navigate('/');
   };
 
-  const getUserTypeLabel = (userType: UserType) => {
-    switch (userType) {
-      case UserType.ADMIN: return '관리자';
-      case UserType.COMPANY: return '협약사';
-      case UserType.EMPLOYEE: return '재직자';
-      case UserType.JOB_SEEKER: return '구직자';
-      default: return userType;
-    }
-  };
 
   return (
     <HeaderContainer>
@@ -121,15 +96,13 @@ const Header: React.FC = () => {
           {isAuthenticated ? (
             <>
               <NavLink to="/dashboard">대시보드</NavLink>
-              <NavLink to="/mypage">마이페이지</NavLink>
               {user?.userType === UserType.ADMIN && (
                 <NavLink to="/admin">관리자</NavLink>
               )}
               <UserInfo>
-                <UserName>{user?.name}님</UserName>
-                <UserBadge userType={user?.userType || UserType.EMPLOYEE}>
-                  {getUserTypeLabel(user?.userType || UserType.EMPLOYEE)}
-                </UserBadge>
+                <NavLink to="/mypage" style={{ color: 'white', textDecoration: 'none' }}>
+                  <UserName>{user?.name}님</UserName>
+                </NavLink>
                 <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               </UserInfo>
             </>
