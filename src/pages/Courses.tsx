@@ -153,40 +153,16 @@ const Courses: React.FC = () => {
                 <div key={course.id} className="col-md-6 col-lg-4 mb-4">
                   <div className="card h-100">
                     <div className="position-relative" style={{ height: '200px', backgroundColor: '#f8f9fa' }}>
-                      {course.imageUrl && course.imageUrl.trim() !== '' ? (
-                        <>
-                          <img
-                            src={course.imageUrl}
-                            className="card-img-top"
-                            alt={course.title}
-                            style={{ height: '200px', objectFit: 'cover' }}
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                              if (fallback) fallback.style.display = 'flex';
-                            }}
-                          />
-                          <div 
-                            className="d-flex align-items-center justify-content-center h-100"
-                            style={{ display: 'none' }}
-                          >
-                            <div className="text-center text-muted">
-                              <i className="bi bi-book" style={{ fontSize: '3rem' }}></i>
-                              <div className="mt-2">
-                                <small>{course.category}</small>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="d-flex align-items-center justify-content-center h-100">
-                          <div className="text-center text-muted">
-                            <i className="bi bi-book" style={{ fontSize: '3rem' }}></i>
-                            <div className="mt-2">
-                              <small>{course.category}</small>
-                            </div>
-                          </div>
-                        </div>
+                      {course.imageUrl && course.imageUrl.trim() !== '' && (
+                        <img
+                          src={course.imageUrl}
+                          className="card-img-top"
+                          alt={course.title}
+                          style={{ height: '200px', objectFit: 'cover' }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
                       )}
                     </div>
                     <div className="card-body d-flex flex-column">
