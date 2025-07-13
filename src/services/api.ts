@@ -524,20 +524,18 @@ export const adminApi = {
     totalEnrollments: number;
     pendingEnrollments: number;
   }> => {
+    if (USE_MOCK_API) {
+      return {
+        totalUsers: 45,
+        totalCourses: 12,
+        totalEnrollments: 128,
+        pendingEnrollments: 8
+      };
+    }
+    
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch dashboard stats');
-      }
-      
-      return await response.json();
+      const response = await api.get('/admin/dashboard/stats');
+      return response.data;
     } catch (error) {
       console.error('Dashboard stats error:', error);
       // Fallback to mock data if API fails
@@ -551,20 +549,42 @@ export const adminApi = {
   },
 
   getAllUsers: async (): Promise<User[]> => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/admin/users`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+    if (USE_MOCK_API) {
+      // Mock users data
+      return [
+        {
+          id: 1,
+          email: 'test@example.com',
+          name: '테스트 사용자',
+          userType: UserType.EMPLOYEE,
+          authorities: [Authority.USER],
+          status: 'PENDING',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 2,
+          email: 'user2@example.com',
+          name: '일반 사용자',
+          userType: UserType.JOB_SEEKER,
+          authorities: [Authority.USER],
+          status: 'ACTIVE',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 3,
+          email: 'pending@example.com',
+          name: '승인 대기자',
+          userType: UserType.COMPANY,
+          authorities: [Authority.USER],
+          status: 'PENDING',
+          createdAt: new Date().toISOString()
         }
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-      
-      return await response.json();
+      ];
+    }
+    
+    try {
+      const response = await api.get('/admin/users');
+      return response.data;
     } catch (error) {
       console.error('Get users error:', error);
       throw error;
@@ -572,20 +592,15 @@ export const adminApi = {
   },
 
   approveUser: async (userId: number): Promise<void> => {
+    if (USE_MOCK_API) {
+      // Mock approval - simulate success
+      console.log(`Mock: Approving user ${userId}`);
+      return Promise.resolve();
+    }
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/approve`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || '사용자 승인에 실패했습니다.');
-      }
+      const response = await api.post(`/admin/users/${userId}/approve`);
+      return response.data;
     } catch (error) {
       console.error('Approve user error:', error);
       throw error;
@@ -593,20 +608,15 @@ export const adminApi = {
   },
 
   rejectUser: async (userId: number): Promise<void> => {
+    if (USE_MOCK_API) {
+      // Mock rejection - simulate success
+      console.log(`Mock: Rejecting user ${userId}`);
+      return Promise.resolve();
+    }
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/reject`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || '사용자 거절에 실패했습니다.');
-      }
+      const response = await api.post(`/admin/users/${userId}/reject`);
+      return response.data;
     } catch (error) {
       console.error('Reject user error:', error);
       throw error;
@@ -614,20 +624,15 @@ export const adminApi = {
   },
 
   suspendUser: async (userId: number): Promise<void> => {
+    if (USE_MOCK_API) {
+      // Mock suspension - simulate success
+      console.log(`Mock: Suspending user ${userId}`);
+      return Promise.resolve();
+    }
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/suspend`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || '사용자 정지에 실패했습니다.');
-      }
+      const response = await api.post(`/admin/users/${userId}/suspend`);
+      return response.data;
     } catch (error) {
       console.error('Suspend user error:', error);
       throw error;
@@ -635,20 +640,15 @@ export const adminApi = {
   },
 
   deleteUser: async (userId: number): Promise<void> => {
+    if (USE_MOCK_API) {
+      // Mock deletion - simulate success
+      console.log(`Mock: Deleting user ${userId}`);
+      return Promise.resolve();
+    }
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || '사용자 삭제에 실패했습니다.');
-      }
+      const response = await api.delete(`/admin/users/${userId}`);
+      return response.data;
     } catch (error) {
       console.error('Delete user error:', error);
       throw error;
@@ -656,20 +656,15 @@ export const adminApi = {
   },
 
   approveEnrollment: async (enrollmentId: number): Promise<void> => {
+    if (USE_MOCK_API) {
+      // Mock enrollment approval - simulate success
+      console.log(`Mock: Approving enrollment ${enrollmentId}`);
+      return Promise.resolve();
+    }
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/enrollments/${enrollmentId}/approve`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || '수강신청 승인에 실패했습니다.');
-      }
+      const response = await api.post(`/enrollments/${enrollmentId}/approve`);
+      return response.data;
     } catch (error) {
       console.error('Approve enrollment error:', error);
       throw error;
@@ -677,20 +672,15 @@ export const adminApi = {
   },
 
   rejectEnrollment: async (enrollmentId: number): Promise<void> => {
+    if (USE_MOCK_API) {
+      // Mock enrollment rejection - simulate success
+      console.log(`Mock: Rejecting enrollment ${enrollmentId}`);
+      return Promise.resolve();
+    }
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/enrollments/${enrollmentId}/reject`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || '수강신청 거절에 실패했습니다.');
-      }
+      const response = await api.post(`/enrollments/${enrollmentId}/reject`);
+      return response.data;
     } catch (error) {
       console.error('Reject enrollment error:', error);
       throw error;
