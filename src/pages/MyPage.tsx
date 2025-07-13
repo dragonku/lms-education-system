@@ -106,21 +106,17 @@ const MyPage: React.FC = () => {
               <div className="row">
                 <div className="col-md-6">
                   <p className="mb-2">
-                    <i className="bi bi-person-fill text-primary me-2"></i>
                     <strong>이름:</strong> {user.name}
                   </p>
                   <p className="mb-2">
-                    <i className="bi bi-envelope-fill text-primary me-2"></i>
                     <strong>이메일:</strong> {user.email}
                   </p>
                 </div>
                 <div className="col-md-6">
                   <p className="mb-2">
-                    <i className="bi bi-person-badge-fill text-primary me-2"></i>
                     <strong>사용자 유형:</strong> {user.userType}
                   </p>
                   <p className="mb-2">
-                    <i className="bi bi-calendar-plus-fill text-primary me-2"></i>
                     <strong>가입일:</strong> {user.createdAt ? formatDate(user.createdAt) : '정보 없음'}
                   </p>
                 </div>

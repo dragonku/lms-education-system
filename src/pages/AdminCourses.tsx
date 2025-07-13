@@ -424,16 +424,12 @@ const AdminCourses: React.FC = () => {
                     {courses.map(course => (
                       <tr key={course.id}>
                         <td>
-                          <div className="d-flex align-items-center">
-                            <i className="bi bi-mortarboard me-2"></i>
-                            <div>
-                              <div className="fw-bold">{course.title}</div>
-                              <small className="text-muted">{course.description.substring(0, 50)}...</small>
-                            </div>
+                          <div>
+                            <div className="fw-bold">{course.title}</div>
+                            <small className="text-muted">{course.description.substring(0, 50)}...</small>
                           </div>
                         </td>
                         <td>
-                          <i className="bi bi-person me-2"></i>
                           {course.instructor}
                         </td>
                         <td>

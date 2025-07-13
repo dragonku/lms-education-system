@@ -262,29 +262,23 @@ const CourseDetail: React.FC = () => {
               <div className="row mb-3">
                 <div className="col-md-6">
                   <p className="mb-2">
-                    <i className="bi bi-tag-fill text-primary me-2"></i>
                     <strong>카테고리:</strong> {course.category}
                   </p>
                   <p className="mb-2">
-                    <i className="bi bi-person-fill text-primary me-2"></i>
                     <strong>강사:</strong> {course.instructor}
                   </p>
                   <p className="mb-2">
-                    <i className="bi bi-clock-fill text-primary me-2"></i>
                     <strong>기간:</strong> {course.duration}
                   </p>
                 </div>
                 <div className="col-md-6">
                   <p className="mb-2">
-                    <i className="bi bi-calendar-event-fill text-success me-2"></i>
                     <strong>시작일:</strong> {formatDate(course.startDate)}
                   </p>
                   <p className="mb-2">
-                    <i className="bi bi-calendar-check-fill text-danger me-2"></i>
                     <strong>종료일:</strong> {formatDate(course.endDate)}
                   </p>
                   <p className="mb-2">
-                    <i className="bi bi-people-fill text-info me-2"></i>
                     <strong>정원:</strong> {course.currentEnrollment}/{course.capacity}명
                   </p>
                 </div>
@@ -296,7 +290,7 @@ const CourseDetail: React.FC = () => {
               </div>
 
               <div className="mb-3">
-                <h6><i className="bi bi-bar-chart-fill me-2"></i>수강 현황</h6>
+                <h6>수강 현황</h6>
                 <div className="progress mb-2" style={{ height: '20px' }}>
                   <div
                     className="progress-bar progress-bar-striped"
@@ -311,11 +305,9 @@ const CourseDetail: React.FC = () => {
                 </div>
                 <div className="d-flex justify-content-between">
                   <small className="text-muted">
-                    <i className="bi bi-people me-1"></i>
                     {course.currentEnrollment}명 수강 중
                   </small>
                   <small className="text-muted">
-                    <i className="bi bi-person-lines-fill me-1"></i>
                     정원: {course.capacity}명
                   </small>
                 </div>

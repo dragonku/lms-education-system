@@ -343,16 +343,12 @@ const AdminEnrollments: React.FC = () => {
                           </div>
                         </td>
                         <td>
-                          <div className="d-flex align-items-center">
-                            <i className="bi bi-mortarboard me-2"></i>
-                            <div>
-                              <div className="fw-bold">{enrollment.course.title}</div>
-                              <small className="text-muted">{enrollment.course.duration}</small>
-                            </div>
+                          <div>
+                            <div className="fw-bold">{enrollment.course.title}</div>
+                            <small className="text-muted">{enrollment.course.duration}</small>
                           </div>
                         </td>
                         <td>
-                          <i className="bi bi-person me-2"></i>
                           {enrollment.course.instructor}
                         </td>
                         <td>

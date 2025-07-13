@@ -197,10 +197,10 @@ const Courses: React.FC = () => {
                       
                       <div className="mb-2">
                         <span className="badge bg-light text-dark me-2">
-                          <i className="bi bi-tag me-1"></i>{course.category}
+                          {course.category}
                         </span>
                         <span className="text-muted small">
-                          <i className="bi bi-person me-1"></i>{course.instructor}
+                          강사: {course.instructor}
                         </span>
                       </div>
                       
@@ -213,19 +213,19 @@ const Courses: React.FC = () => {
                       <div className="mt-auto">
                         <div className="row small mb-2">
                           <div className="col-6">
-                            <i className="bi bi-clock me-1"></i><strong>기간:</strong> {course.duration}
+                            <strong>기간:</strong> {course.duration}
                           </div>
                           <div className="col-6">
-                            <i className="bi bi-people me-1"></i><strong>정원:</strong> {course.currentEnrollment}/{course.capacity}
+                            <strong>정원:</strong> {course.currentEnrollment}/{course.capacity}
                           </div>
                         </div>
                         
                         <div className="row small mb-3">
                           <div className="col-6">
-                            <i className="bi bi-calendar-event me-1"></i><strong>시작:</strong> {formatDate(course.startDate)}
+                            <strong>시작:</strong> {formatDate(course.startDate)}
                           </div>
                           <div className="col-6">
-                            <i className="bi bi-currency-dollar me-1"></i><strong>가격:</strong> {formatPrice(course.price)}원
+                            <strong>가격:</strong> {formatPrice(course.price)}원
                           </div>
                         </div>
                         
