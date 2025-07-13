@@ -4,6 +4,12 @@ import { LoginRequest, SignupRequest, AuthResponse, User, UserType, Authority, C
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 const USE_MOCK_API = true; // Mock API 사용 (개발/테스트용)
 
+// Mock 게시글 저장소 (메모리 기반)
+const MOCK_POSTS_STORAGE = {
+  notice: [] as any[],
+  qna: [] as any[]
+};
+
 // Mock users for testing
 const MOCK_USERS = {
   'admin@lms.com': {
@@ -716,6 +722,10 @@ export const boardApi = {
   },
 
   getNotices: async (boardType: string): Promise<Post[]> => {
+    if (USE_MOCK_API) {
+      // Mock notices data - return empty array for development
+      return [];
+    }
     const response = await api.get<Post[]>(`/board/${boardType}/notices`);
     return response.data;
   },
@@ -729,13 +739,31 @@ export const boardApi = {
   getNoticePosts: async (params: { page?: number; size?: number; keyword?: string } = {}): Promise<PostListResponse> => {
     if (USE_MOCK_API) {
       // Mock notice posts data
+      const page = params.page || 0;
+      const size = params.size || 10;
+      const keyword = params.keyword?.toLowerCase();
+      
+      let filteredPosts = MOCK_POSTS_STORAGE.notice;
+      if (keyword) {
+        filteredPosts = filteredPosts.filter(post => 
+          post.title.toLowerCase().includes(keyword) || 
+          post.content.toLowerCase().includes(keyword)
+        );
+      }
+      
+      const totalElements = filteredPosts.length;
+      const totalPages = Math.ceil(totalElements / size);
+      const startIndex = page * size;
+      const endIndex = startIndex + size;
+      const posts = filteredPosts.slice(startIndex, endIndex);
+      
       return {
-        posts: [],
-        currentPage: params.page || 0,
-        totalPages: 0,
-        totalElements: 0,
-        hasNext: false,
-        hasPrevious: false
+        posts,
+        currentPage: page,
+        totalPages,
+        totalElements,
+        hasNext: page < totalPages - 1,
+        hasPrevious: page > 0
       };
     }
     const response = await api.get<PostListResponse>('/board/notice', { params });
@@ -754,7 +782,7 @@ export const boardApi = {
     if (USE_MOCK_API) {
       // Mock successful creation
       const newPost: PostResponse = {
-        id: Math.floor(Math.random() * 10000),
+        id: Date.now(), // Use timestamp as unique ID
         title: postData.title,
         content: postData.content,
         boardType: 'NOTICE' as any,
@@ -767,6 +795,9 @@ export const boardApi = {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
+      
+      // Add to mock storage
+      MOCK_POSTS_STORAGE.notice.unshift(newPost);
       return newPost;
     }
     const response = await api.post<PostResponse>('/board/notice', postData);
@@ -805,13 +836,31 @@ export const boardApi = {
   getQnAPosts: async (params: { page?: number; size?: number; keyword?: string } = {}): Promise<PostListResponse> => {
     if (USE_MOCK_API) {
       // Mock Q&A posts data
+      const page = params.page || 0;
+      const size = params.size || 10;
+      const keyword = params.keyword?.toLowerCase();
+      
+      let filteredPosts = MOCK_POSTS_STORAGE.qna;
+      if (keyword) {
+        filteredPosts = filteredPosts.filter(post => 
+          post.title.toLowerCase().includes(keyword) || 
+          post.content.toLowerCase().includes(keyword)
+        );
+      }
+      
+      const totalElements = filteredPosts.length;
+      const totalPages = Math.ceil(totalElements / size);
+      const startIndex = page * size;
+      const endIndex = startIndex + size;
+      const posts = filteredPosts.slice(startIndex, endIndex);
+      
       return {
-        posts: [],
-        currentPage: params.page || 0,
-        totalPages: 0,
-        totalElements: 0,
-        hasNext: false,
-        hasPrevious: false
+        posts,
+        currentPage: page,
+        totalPages,
+        totalElements,
+        hasNext: page < totalPages - 1,
+        hasPrevious: page > 0
       };
     }
     const response = await api.get<PostListResponse>('/board/qna', { params });
@@ -830,7 +879,7 @@ export const boardApi = {
     if (USE_MOCK_API) {
       // Mock successful creation
       const newPost: PostResponse = {
-        id: Math.floor(Math.random() * 10000),
+        id: Date.now(), // Use timestamp as unique ID
         title: postData.title,
         content: postData.content,
         boardType: 'QNA' as any,
@@ -843,6 +892,9 @@ export const boardApi = {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
+      
+      // Add to mock storage
+      MOCK_POSTS_STORAGE.qna.unshift(newPost);
       return newPost;
     }
     const response = await api.post<PostResponse>('/board/qna', postData);

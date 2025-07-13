@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import api from '../services/api';
+import { boardApi } from '../services/api';
 
 interface Post {
   id: number;
@@ -46,21 +46,15 @@ const QnABoard: React.FC = () => {
       setLoading(true);
       setError(null);
       
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        size: '10'
+      const response = await boardApi.getQnAPosts({
+        page: currentPage,
+        size: 10,
+        keyword: keyword.trim() || undefined
       });
       
-      if (keyword.trim()) {
-        params.append('keyword', keyword.trim());
-      }
-      
-      const response = await api.get(`/board/qna?${params}`);
-      const data: PostsResponse = response.data;
-      
-      setPosts(data.posts || []);
-      setTotalPages(data.totalPages || 0);
-      setTotalElements(data.totalElements || 0);
+      setPosts(response.posts || []);
+      setTotalPages(response.totalPages || 0);
+      setTotalElements(response.totalElements || 0);
     } catch (err: any) {
       console.error('Error fetching posts:', err);
       // 404 에러나 빈 결과는 에러로 처리하지 않음
