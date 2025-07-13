@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { UserType } from '../types';
-import api from '../services/api';
+import { UserType, Authority } from '../types';
+import api, { boardApi } from '../services/api';
 
 interface Post {
   id: number;
@@ -49,11 +49,25 @@ const QnADetail: React.FC = () => {
       setLoading(true);
       setError(null);
       
-      const response = await api.get(`/board/qna/${id}`);
-      setPost(response.data);
+      const postData = await boardApi.getQnAPost(parseInt(id!));
+      
+      // 비밀글 권한 체크
+      if (postData.isSecret) {
+        const isAdmin = user?.authorities?.includes(Authority.ADMIN);
+        const isAuthor = user?.id === postData.authorId;
+        
+        if (!isAdmin && !isAuthor) {
+          setError('비밀글은 작성자와 관리자만 볼 수 있습니다.');
+          return;
+        }
+      }
+      
+      setPost(postData as any);
     } catch (err: any) {
       if (err.response?.status === 403) {
         setError('비밀글은 작성자와 관리자만 볼 수 있습니다.');
+      } else if (err.response?.status === 404) {
+        setError('게시글을 찾을 수 없습니다.');
       } else {
         setError('게시글을 불러오는 중 오류가 발생했습니다.');
       }
@@ -73,7 +87,7 @@ const QnADetail: React.FC = () => {
     
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
-        await api.delete(`/board/qna/${post.id}`);
+        await boardApi.deleteQnAPost(post.id);
         alert('게시글이 삭제되었습니다.');
         navigate('/qna');
       } catch (err) {

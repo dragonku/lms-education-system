@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { Authority } from '../types';
 import { boardApi } from '../services/api';
 
 interface Post {
@@ -34,7 +35,7 @@ const QnABoard: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,6 +78,20 @@ const QnABoard: React.FC = () => {
   };
 
   const handlePostClick = (postId: number) => {
+    // 해당 게시글 찾기
+    const post = posts.find(p => p.id === postId);
+    
+    // 비밀글 권한 체크
+    if (post?.isSecret) {
+      const isAdmin = user?.authorities?.includes(Authority.ADMIN);
+      const isAuthor = user?.id === post.authorId;
+      
+      if (!isAdmin && !isAuthor) {
+        alert('비밀글은 작성자와 관리자만 볼 수 있습니다.');
+        return;
+      }
+    }
+    
     navigate(`/qna/${postId}`);
   };
 
@@ -235,7 +250,18 @@ const QnABoard: React.FC = () => {
                             <td>{post.id}</td>
                             <td>
                               <div className="d-flex align-items-center">
-                                <span className="me-2">{post.title}</span>
+                                <span className="me-2">
+                                  {(() => {
+                                    if (post.isSecret) {
+                                      const isAdmin = user?.authorities?.includes(Authority.ADMIN);
+                                      const isAuthor = user?.id === post.authorId;
+                                      if (!isAdmin && !isAuthor) {
+                                        return '비밀글입니다';
+                                      }
+                                    }
+                                    return post.title;
+                                  })()}
+                                </span>
                                 {post.isSecret && (
                                   <i className="bi bi-lock text-warning" title="비밀글"></i>
                                 )}

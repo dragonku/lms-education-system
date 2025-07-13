@@ -811,7 +811,7 @@ export const boardApi = {
         content: postData.content,
         boardType: 'NOTICE' as any,
         isNotice: true,
-        isSecret: postData.isSecret || false,
+        isSecret: Boolean(postData.isSecret),
         authorId: 1, // Mock admin user ID
         authorName: '관리자',
         viewCount: 0,
@@ -837,7 +837,7 @@ export const boardApi = {
         content: postData.content,
         boardType: 'NOTICE' as any,
         isNotice: true,
-        isSecret: postData.isSecret || false,
+        isSecret: Boolean(postData.isSecret),
         authorId: 1, // Mock admin user ID
         authorName: '관리자',
         viewCount: 0,
@@ -932,7 +932,7 @@ export const boardApi = {
         content: postData.content,
         boardType: 'QNA' as any,
         isNotice: false,
-        isSecret: postData.isSecret || false,
+        isSecret: Boolean(postData.isSecret),
         authorId: 1, // Mock user ID
         authorName: '테스트 사용자',
         viewCount: 0,
@@ -958,7 +958,7 @@ export const boardApi = {
         content: postData.content,
         boardType: 'QNA' as any,
         isNotice: false,
-        isSecret: postData.isSecret || false,
+        isSecret: Boolean(postData.isSecret),
         authorId: 1, // Mock user ID
         authorName: '테스트 사용자',
         viewCount: 0,
