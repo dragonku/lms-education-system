@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { courseApi, adminApi } from '../services/api';
 import { Course, Enrollment, User, UserType } from '../types';
@@ -163,28 +164,28 @@ const AdminDashboard: React.FC = () => {
                   </h5>
                   <div className="row">
                     <div className="col-md-3 mb-2">
-                      <a href="/admin/users" className="btn btn-outline-primary w-100">
+                      <Link to="/admin/users" className="btn btn-outline-primary w-100">
                         <i className="bi bi-person-gear me-2"></i>
                         회원 관리
-                      </a>
+                      </Link>
                     </div>
                     <div className="col-md-3 mb-2">
-                      <a href="/admin/courses" className="btn btn-outline-success w-100">
+                      <Link to="/admin/courses" className="btn btn-outline-success w-100">
                         <i className="bi bi-book-half me-2"></i>
                         과정 관리
-                      </a>
+                      </Link>
                     </div>
                     <div className="col-md-3 mb-2">
-                      <a href="/admin/enrollments" className="btn btn-outline-info w-100">
+                      <Link to="/admin/enrollments" className="btn btn-outline-info w-100">
                         <i className="bi bi-clipboard-check me-2"></i>
                         수강신청 관리
-                      </a>
+                      </Link>
                     </div>
                     <div className="col-md-3 mb-2">
-                      <a href="/admin/reports" className="btn btn-outline-warning w-100">
+                      <Link to="/admin/reports" className="btn btn-outline-warning w-100">
                         <i className="bi bi-graph-up me-2"></i>
                         통계 리포트
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
