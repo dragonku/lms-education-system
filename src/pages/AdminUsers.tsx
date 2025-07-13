@@ -284,7 +284,7 @@ const AdminUsers: React.FC = () => {
 
           {/* 통계 카드 */}
           <div className="row mb-4">
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-primary">{users.length}</h4>
@@ -292,7 +292,7 @@ const AdminUsers: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-success">{users.filter(u => u.status === 'ACTIVE').length}</h4>
@@ -300,7 +300,7 @@ const AdminUsers: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-warning">{users.filter(u => u.status === 'PENDING').length}</h4>
@@ -308,7 +308,7 @@ const AdminUsers: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-info">{users.filter(u => u.userType === UserType.COMPANY).length}</h4>

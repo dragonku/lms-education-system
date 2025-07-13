@@ -212,7 +212,7 @@ const CourseDetail: React.FC = () => {
       </div>
 
       <div className="row">
-        <div className="col-lg-8">
+        <div className="col-lg-8 col-12 mb-4 mb-lg-0">
           <div className="card">
             <div className="position-relative" style={{ height: '300px', backgroundColor: '#f8f9fa' }}>
               {course.imageUrl && course.imageUrl.trim() !== '' && (
@@ -234,7 +234,7 @@ const CourseDetail: React.FC = () => {
               </div>
 
               <div className="row mb-3">
-                <div className="col-md-6">
+                <div className="col-md-6 col-12">
                   <p className="mb-2">
                     <strong>카테고리:</strong> {course.category}
                   </p>
@@ -245,7 +245,7 @@ const CourseDetail: React.FC = () => {
                     <strong>기간:</strong> {course.duration}
                   </p>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 col-12">
                   <p className="mb-2">
                     <strong>시작일:</strong> {formatDate(course.startDate)}
                   </p>
@@ -290,7 +290,7 @@ const CourseDetail: React.FC = () => {
           </div>
         </div>
 
-        <div className="col-lg-4">
+        <div className="col-lg-4 col-12">
           <div className="card sticky-top" style={{ top: '20px' }}>
             <div className="card-body">
               <h5 className="card-title">수강 정보</h5>

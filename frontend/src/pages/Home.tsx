@@ -65,6 +65,10 @@ const FeatureCard = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: left;
+
+  @media (max-width: 480px) {
+    padding: 1.5rem;
+  }
 `;
 
 const FeatureTitle = styled.h3`

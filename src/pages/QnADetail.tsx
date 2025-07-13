@@ -222,19 +222,20 @@ const QnADetail: React.FC = () => {
         <div className="col-md-12">
           <div className="card mb-4">
             <div className="card-header">
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div className="mb-2 mb-md-0">
                   <h4 className="mb-0">
                     {post.title}
                     {post.isSecret && (
                       <i className="bi bi-lock text-warning ms-2" title="비밀글"></i>
                     )}
                   </h4>
-                  <small className="text-muted">
-                    작성자: {post.authorName} | 조회수: {post.viewCount} | 
-                    작성일: {formatDate(post.createdAt)}
+                  <small className="text-muted d-flex flex-wrap gap-2">
+                    <span>작성자: {post.authorName}</span>
+                    <span>조회수: {post.viewCount}</span>
+                    <span>작성일: {formatDate(post.createdAt)}</span>
                     {post.updatedAt !== post.createdAt && (
-                      <span> | 수정일: {formatDate(post.updatedAt)}</span>
+                      <span>수정일: {formatDate(post.updatedAt)}</span>
                     )}
                   </small>
                 </div>

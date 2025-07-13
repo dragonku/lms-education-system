@@ -278,7 +278,7 @@ const AdminEnrollments: React.FC = () => {
 
           {/* 통계 카드 */}
           <div className="row mb-4">
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-primary">{enrollments.length}</h4>
@@ -286,7 +286,7 @@ const AdminEnrollments: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-warning">{enrollments.filter(e => e.status === EnrollmentStatus.PENDING).length}</h4>
@@ -294,7 +294,7 @@ const AdminEnrollments: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-success">{enrollments.filter(e => e.status === EnrollmentStatus.APPROVED).length}</h4>
@@ -302,7 +302,7 @@ const AdminEnrollments: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6 mb-3">
               <div className="card bg-light">
                 <div className="card-body text-center">
                   <h4 className="text-danger">{enrollments.filter(e => e.status === EnrollmentStatus.REJECTED).length}</h4>

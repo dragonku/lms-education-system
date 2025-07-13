@@ -216,7 +216,7 @@ const NoticeWrite: React.FC = () => {
             </div>
 
             {/* 버튼 */}
-            <div className="d-flex justify-content-between mt-4 mb-5">
+            <div className="d-flex flex-column flex-sm-row justify-content-between mt-4 mb-5 gap-2">
               <Link to="/board/notice" className="btn btn-secondary">
                 <i className="bi bi-arrow-left me-1"></i>
                 취소

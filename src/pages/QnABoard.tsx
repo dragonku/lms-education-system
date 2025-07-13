@@ -183,7 +183,7 @@ const QnABoard: React.FC = () => {
             <div className="card-body">
               <form onSubmit={handleSearch}>
                 <div className="row">
-                  <div className="col-md-10">
+                  <div className="col-md-10 col-12 mb-2 mb-md-0">
                     <input
                       type="text"
                       className="form-control"
@@ -192,7 +192,7 @@ const QnABoard: React.FC = () => {
                       onChange={(e) => setKeyword(e.target.value)}
                     />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 col-12">
                     <button type="submit" className="btn btn-outline-primary w-100">
                       <i className="bi bi-search me-2"></i>
                       검색

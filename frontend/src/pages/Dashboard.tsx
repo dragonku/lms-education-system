@@ -94,6 +94,17 @@ const InfoRow = styled.div`
   span {
     color: #7f8c8d;
   }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+
+    strong {
+      min-width: unset;
+      margin-bottom: 0.25rem;
+    }
+  }
 `;
 
 const Dashboard: React.FC = () => {

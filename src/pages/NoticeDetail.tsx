@@ -114,24 +114,24 @@ const NoticeDetail: React.FC = () => {
           {/* 게시글 헤더 */}
           <div className="card mb-4">
             <div className="card-header">
-              <div className="d-flex justify-content-between align-items-start">
-                <div className="flex-grow-1">
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div className="flex-grow-1 mb-2 mb-md-0">
                   <h3 className="card-title mb-2">
                     {post.isNotice && (
                       <span className="badge bg-warning text-dark me-2">공지</span>
                     )}
                     {post.title}
                   </h3>
-                  <div className="text-muted small">
-                    <span className="me-3">
+                  <div className="text-muted small d-flex flex-wrap gap-2">
+                    <span>
                       <i className="bi bi-person me-1"></i>
                       {post.authorName}
                     </span>
-                    <span className="me-3">
+                    <span>
                       <i className="bi bi-calendar me-1"></i>
                       {formatDate(post.createdAt)}
                     </span>
-                    <span className="me-3">
+                    <span>
                       <i className="bi bi-eye me-1"></i>
                       조회 {post.viewCount}
                     </span>

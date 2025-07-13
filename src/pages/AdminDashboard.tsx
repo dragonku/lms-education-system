@@ -195,7 +195,7 @@ const AdminDashboard: React.FC = () => {
 
           {/* 과정 현황 */}
           <div className="row mb-4">
-            <div className="col-md-6">
+            <div className="col-md-6 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">
@@ -224,7 +224,7 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-6 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">

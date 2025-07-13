@@ -11,6 +11,12 @@ const LoginContainer = styled.div`
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 480px) {
+    max-width: 90%;
+    margin: 1rem auto;
+    padding: 1.5rem;
+  }
 `;
 
 const Title = styled.h1`

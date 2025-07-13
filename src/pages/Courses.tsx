@@ -152,7 +152,7 @@ const Courses: React.FC = () => {
               </div>
             ) : (
               courses.map(course => (
-                <div key={course.id} className="col-md-6 col-lg-4 mb-4">
+                <div key={course.id} className="col-md-6 col-lg-4 col-12 mb-4">
                   <div className="card h-100">
                     <div className="position-relative" style={{ height: '200px', backgroundColor: '#f8f9fa' }}>
                       {course.imageUrl && course.imageUrl.trim() !== '' && (

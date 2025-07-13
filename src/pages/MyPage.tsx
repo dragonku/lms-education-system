@@ -104,7 +104,7 @@ const MyPage: React.FC = () => {
                 <i className="bi bi-person-circle me-2"></i>사용자 정보
               </h5>
               <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-6 col-12">
                   <p className="mb-2">
                     <strong>이름:</strong> {user.name}
                   </p>
@@ -112,7 +112,7 @@ const MyPage: React.FC = () => {
                     <strong>이메일:</strong> {user.email}
                   </p>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 col-12">
                   <p className="mb-2">
                     <strong>사용자 유형:</strong> {user.userType}
                   </p>

@@ -16,6 +16,12 @@ const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 1rem;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -33,6 +39,14 @@ const Nav = styled.nav`
   display: flex;
   gap: 2rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    align-items: flex-start;
+    margin-top: 1rem;
+  }
 `;
 
 const NavLink = styled(Link)`
@@ -86,6 +100,12 @@ const LogoutButton = styled.button`
   &:hover {
     background-color: white;
     color: #2c3e50;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
   }
 `;
 
