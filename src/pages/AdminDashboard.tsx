@@ -113,7 +113,7 @@ const AdminDashboard: React.FC = () => {
                       <p className="card-text">전체 과정</p>
                     </div>
                     <div className="align-self-center">
-                      <i className="bi bi-book fs-1"></i>
+                      <i className="bi bi-mortarboard fs-1"></i>
                     </div>
                   </div>
                 </div>
@@ -171,7 +171,7 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="col-md-3 mb-2">
                       <Link to="/admin/courses" className="btn btn-outline-success w-100">
-                        <i className="bi bi-book-half me-2"></i>
+                        <i className="bi bi-mortarboard me-2"></i>
                         과정 관리
                       </Link>
                     </div>

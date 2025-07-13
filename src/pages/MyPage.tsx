@@ -116,7 +116,7 @@ const MyPage: React.FC = () => {
                 </div>
                 <div className="col-md-6">
                   <p className="mb-2">
-                    <i className="bi bi-bookmark-fill text-primary me-2"></i>
+                    <i className="bi bi-person-badge-fill text-primary me-2"></i>
                     <strong>사용자 유형:</strong> {user.userType}
                   </p>
                   <p className="mb-2">
@@ -132,7 +132,7 @@ const MyPage: React.FC = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">
-                <i className="bi bi-journal-bookmark me-2"></i>수강 내역
+                <i className="bi bi-list-check me-2"></i>수강 내역
               </h5>
               
               {loading ? (

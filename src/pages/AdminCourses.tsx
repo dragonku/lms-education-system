@@ -171,7 +171,7 @@ const AdminCourses: React.FC = () => {
         <div className="col-12">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1>
-              <i className="bi bi-book-half me-2"></i>
+              <i className="bi bi-mortarboard me-2"></i>
               과정 관리
             </h1>
             <div>
@@ -425,7 +425,7 @@ const AdminCourses: React.FC = () => {
                       <tr key={course.id}>
                         <td>
                           <div className="d-flex align-items-center">
-                            <i className="bi bi-book me-2"></i>
+                            <i className="bi bi-mortarboard me-2"></i>
                             <div>
                               <div className="fw-bold">{course.title}</div>
                               <small className="text-muted">{course.description.substring(0, 50)}...</small>

@@ -262,7 +262,7 @@ const CourseDetail: React.FC = () => {
               <div className="row mb-3">
                 <div className="col-md-6">
                   <p className="mb-2">
-                    <i className="bi bi-bookmark-fill text-primary me-2"></i>
+                    <i className="bi bi-tag-fill text-primary me-2"></i>
                     <strong>카테고리:</strong> {course.category}
                   </p>
                   <p className="mb-2">

@@ -344,7 +344,7 @@ const AdminEnrollments: React.FC = () => {
                         </td>
                         <td>
                           <div className="d-flex align-items-center">
-                            <i className="bi bi-book me-2"></i>
+                            <i className="bi bi-mortarboard me-2"></i>
                             <div>
                               <div className="fw-bold">{enrollment.course.title}</div>
                               <small className="text-muted">{enrollment.course.duration}</small>

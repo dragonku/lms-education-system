@@ -197,7 +197,7 @@ const Courses: React.FC = () => {
                       
                       <div className="mb-2">
                         <span className="badge bg-light text-dark me-2">
-                          <i className="bi bi-bookmark me-1"></i>{course.category}
+                          <i className="bi bi-tag me-1"></i>{course.category}
                         </span>
                         <span className="text-muted small">
                           <i className="bi bi-person me-1"></i>{course.instructor}
