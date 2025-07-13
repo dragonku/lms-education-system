@@ -297,7 +297,6 @@ const CourseDetail: React.FC = () => {
               
               <div className="mb-3 text-center">
                 <div className="display-6 text-primary fw-bold">
-                  <i className="bi bi-currency-dollar me-1"></i>
                   {formatPrice(course.price)}원
                 </div>
               </div>

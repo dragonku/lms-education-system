@@ -357,7 +357,6 @@ const AdminEnrollments: React.FC = () => {
                           </span>
                         </td>
                         <td>
-                          <i className="bi bi-currency-dollar me-2"></i>
                           {formatPrice(enrollment.course.price)}원
                         </td>
                         <td>{formatDate(enrollment.enrolledAt)}</td>

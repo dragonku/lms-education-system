@@ -457,7 +457,6 @@ const AdminCourses: React.FC = () => {
                           {course.duration}
                         </td>
                         <td>
-                          <i className="bi bi-currency-dollar me-2"></i>
                           {formatPrice(course.price)}원
                         </td>
                         <td>{getStatusBadge(course.status as CourseStatus)}</td>
