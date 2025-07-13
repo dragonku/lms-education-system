@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { courseApi } from '../services/api';
 import { Course } from '../types';
+import { useDebounce } from '../hooks/useDebounce'; // 디바운스 훅 임포트
 
 const Courses: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -13,6 +14,8 @@ const Courses: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
+  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms 디바운스 적용
+
   const pageSize = 6;
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const Courses: React.FC = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, [selectedCategory, searchTerm, currentPage]);
+  }, [selectedCategory, debouncedSearchTerm, currentPage]); // searchTerm 대신 debouncedSearchTerm 사용
 
   const fetchCategories = async () => {
     try {
@@ -41,7 +44,7 @@ const Courses: React.FC = () => {
         page: currentPage,
         size: pageSize,
         category: selectedCategory || undefined,
-        search: searchTerm || undefined
+        search: debouncedSearchTerm || undefined
       });
       
       setCourses(result.courses);
@@ -59,8 +62,7 @@ const Courses: React.FC = () => {
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
+    setSearchTerm(e.target.value); // 페이지는 useEffect에서 debouncedSearchTerm이 바뀔 때 초기화
   };
 
   const getStatusBadge = (course: Course) => {
