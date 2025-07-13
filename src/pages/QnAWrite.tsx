@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { UserType } from '../types';
-import api from '../services/api';
+import { boardApi } from '../services/api';
 
 interface Post {
   id: number;
@@ -42,8 +42,7 @@ const QnAWrite: React.FC = () => {
       setLoading(true);
       setError(null);
       
-      const response = await api.get(`/board/qna/${id}`);
-      const post: Post = response.data;
+      const post = await boardApi.getQnAPost(parseInt(id!));
       
       if (user && (user.id !== post.authorId && user.userType !== UserType.ADMIN)) {
         alert('수정 권한이 없습니다.');
@@ -90,13 +89,13 @@ const QnAWrite: React.FC = () => {
       };
 
       if (isEdit) {
-        await api.put(`/board/qna/${id}`, postData);
+        await boardApi.updateQnAPost(parseInt(id!), postData);
         alert('게시글이 수정되었습니다.');
         navigate(`/qna/${id}`);
       } else {
-        const response = await api.post('/board/qna', postData);
+        const newPost = await boardApi.createQnAPost(postData);
         alert('게시글이 등록되었습니다.');
-        navigate(`/qna/${response.data.id}`);
+        navigate(`/qna/${newPost.id}`);
       }
     } catch (err: any) {
       if (err.response?.data?.error) {

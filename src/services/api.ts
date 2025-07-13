@@ -727,27 +727,156 @@ export const boardApi = {
 
   // Notice Board specific APIs
   getNoticePosts: async (params: { page?: number; size?: number; keyword?: string } = {}): Promise<PostListResponse> => {
+    if (USE_MOCK_API) {
+      // Mock notice posts data
+      return {
+        posts: [],
+        currentPage: params.page || 0,
+        totalPages: 0,
+        totalElements: 0,
+        hasNext: false,
+        hasPrevious: false
+      };
+    }
     const response = await api.get<PostListResponse>('/board/notice', { params });
     return response.data;
   },
 
   getNoticePost: async (id: number): Promise<PostDetailResponse> => {
+    if (USE_MOCK_API) {
+      throw { response: { status: 404, data: { message: 'Mock: Notice not found' } } };
+    }
     const response = await api.get<PostDetailResponse>(`/board/notice/${id}`);
     return response.data;
   },
 
   createNoticePost: async (postData: PostCreateRequest): Promise<PostResponse> => {
+    if (USE_MOCK_API) {
+      // Mock successful creation
+      const newPost: PostResponse = {
+        id: Math.floor(Math.random() * 10000),
+        title: postData.title,
+        content: postData.content,
+        boardType: 'NOTICE' as any,
+        isNotice: true,
+        isSecret: postData.isSecret || false,
+        authorId: 1, // Mock admin user ID
+        authorName: '관리자',
+        viewCount: 0,
+        commentCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      return newPost;
+    }
     const response = await api.post<PostResponse>('/board/notice', postData);
     return response.data;
   },
 
   updateNoticePost: async (id: number, postData: PostUpdateRequest): Promise<PostResponse> => {
+    if (USE_MOCK_API) {
+      // Mock successful update
+      const updatedPost: PostResponse = {
+        id: id,
+        title: postData.title,
+        content: postData.content,
+        boardType: 'NOTICE' as any,
+        isNotice: true,
+        isSecret: postData.isSecret || false,
+        authorId: 1, // Mock admin user ID
+        authorName: '관리자',
+        viewCount: 0,
+        commentCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      return updatedPost;
+    }
     const response = await api.put<PostResponse>(`/board/notice/${id}`, postData);
     return response.data;
   },
 
   deleteNoticePost: async (id: number): Promise<{ message: string }> => {
     const response = await api.delete<{ message: string }>(`/board/notice/${id}`);
+    return response.data;
+  },
+  
+  // Q&A Board specific APIs
+  getQnAPosts: async (params: { page?: number; size?: number; keyword?: string } = {}): Promise<PostListResponse> => {
+    if (USE_MOCK_API) {
+      // Mock Q&A posts data
+      return {
+        posts: [],
+        currentPage: params.page || 0,
+        totalPages: 0,
+        totalElements: 0,
+        hasNext: false,
+        hasPrevious: false
+      };
+    }
+    const response = await api.get<PostListResponse>('/board/qna', { params });
+    return response.data;
+  },
+  
+  getQnAPost: async (id: number): Promise<PostDetailResponse> => {
+    if (USE_MOCK_API) {
+      throw { response: { status: 404, data: { message: 'Mock: Post not found' } } };
+    }
+    const response = await api.get<PostDetailResponse>(`/board/qna/${id}`);
+    return response.data;
+  },
+  
+  createQnAPost: async (postData: PostCreateRequest): Promise<PostResponse> => {
+    if (USE_MOCK_API) {
+      // Mock successful creation
+      const newPost: PostResponse = {
+        id: Math.floor(Math.random() * 10000),
+        title: postData.title,
+        content: postData.content,
+        boardType: 'QNA' as any,
+        isNotice: false,
+        isSecret: postData.isSecret || false,
+        authorId: 1, // Mock user ID
+        authorName: '테스트 사용자',
+        viewCount: 0,
+        commentCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      return newPost;
+    }
+    const response = await api.post<PostResponse>('/board/qna', postData);
+    return response.data;
+  },
+  
+  updateQnAPost: async (id: number, postData: PostUpdateRequest): Promise<PostResponse> => {
+    if (USE_MOCK_API) {
+      // Mock successful update
+      const updatedPost: PostResponse = {
+        id: id,
+        title: postData.title,
+        content: postData.content,
+        boardType: 'QNA' as any,
+        isNotice: false,
+        isSecret: postData.isSecret || false,
+        authorId: 1, // Mock user ID
+        authorName: '테스트 사용자',
+        viewCount: 0,
+        commentCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      return updatedPost;
+    }
+    const response = await api.put<PostResponse>(`/board/qna/${id}`, postData);
+    return response.data;
+  },
+  
+  deleteQnAPost: async (id: number): Promise<{ message: string }> => {
+    if (USE_MOCK_API) {
+      return { message: 'Mock: Q&A post deleted successfully' };
+    }
+    const response = await api.delete<{ message: string }>(`/board/qna/${id}`);
     return response.data;
   }
 };
