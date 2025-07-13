@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { courseApi } from '../services/api';
 import { Course } from '../types';
-import { useDebounce } from '../hooks/useDebounce'; // 디바운스 훅 임포트
+import useDebounce from '../hooks/useDebounce'; // 디바운스 훅 임포트
 
 const Courses: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
