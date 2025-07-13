@@ -772,7 +772,31 @@ export const boardApi = {
 
   getNoticePost: async (id: number): Promise<PostDetailResponse> => {
     if (USE_MOCK_API) {
-      throw { response: { status: 404, data: { message: 'Mock: Notice not found' } } };
+      // Find post in mock storage
+      const post = MOCK_POSTS_STORAGE.notice.find(p => p.id === id);
+      if (!post) {
+        throw { response: { status: 404, data: { message: 'Mock: Notice not found' } } };
+      }
+      
+      // Increment view count in storage
+      post.viewCount += 1;
+      
+      // Convert PostResponse to PostDetailResponse format
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        boardType: post.boardType,
+        isNotice: post.isNotice,
+        isSecret: post.isSecret,
+        viewCount: post.viewCount,
+        authorName: post.authorName,
+        authorId: post.authorId,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        comments: [], // Empty comments for mock
+        attachments: [] // Empty attachments for mock
+      };
     }
     const response = await api.get<PostDetailResponse>(`/board/notice/${id}`);
     return response.data;
@@ -869,7 +893,31 @@ export const boardApi = {
   
   getQnAPost: async (id: number): Promise<PostDetailResponse> => {
     if (USE_MOCK_API) {
-      throw { response: { status: 404, data: { message: 'Mock: Post not found' } } };
+      // Find post in mock storage
+      const post = MOCK_POSTS_STORAGE.qna.find(p => p.id === id);
+      if (!post) {
+        throw { response: { status: 404, data: { message: 'Mock: Q&A post not found' } } };
+      }
+      
+      // Increment view count in storage
+      post.viewCount += 1;
+      
+      // Convert PostResponse to PostDetailResponse format
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        boardType: post.boardType,
+        isNotice: post.isNotice,
+        isSecret: post.isSecret,
+        viewCount: post.viewCount,
+        authorName: post.authorName,
+        authorId: post.authorId,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        comments: [], // Empty comments for mock
+        attachments: [] // Empty attachments for mock
+      };
     }
     const response = await api.get<PostDetailResponse>(`/board/qna/${id}`);
     return response.data;
