@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { UserType, Authority } from '../types';
-import api, { boardApi } from '../services/api';
+import { boardApi } from '../services/api';
 
 interface Post {
   id: number;
@@ -106,9 +106,7 @@ const QnADetail: React.FC = () => {
     }
 
     try {
-      await api.post(`/board/qna/${id}/comments`, {
-        content: comment.trim()
-      });
+      await boardApi.createComment(parseInt(id!), 'qna', comment.trim());
       
       setComment('');
       await fetchPost();
@@ -130,9 +128,7 @@ const QnADetail: React.FC = () => {
     }
 
     try {
-      await api.put(`/board/comments/${commentId}`, {
-        content: editingCommentContent.trim()
-      });
+      await boardApi.updateComment(parseInt(id!), commentId, 'qna', editingCommentContent.trim());
       
       setEditingCommentId(null);
       setEditingCommentContent('');
@@ -146,7 +142,7 @@ const QnADetail: React.FC = () => {
   const handleCommentDelete = async (commentId: number) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
-        await api.delete(`/board/comments/${commentId}`);
+        await boardApi.deleteComment(parseInt(id!), commentId, 'qna');
         await fetchPost();
       } catch (err) {
         alert('댓글 삭제 중 오류가 발생했습니다.');
