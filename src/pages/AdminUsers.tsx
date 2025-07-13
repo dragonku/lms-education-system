@@ -135,6 +135,40 @@ const AdminUsers: React.FC = () => {
     }
   };
 
+  const handleReactivate = async (userId: number) => {
+    if (!window.confirm('정말로 이 사용자를 재활성화하시겠습니까?')) {
+      return;
+    }
+    
+    try {
+      await adminApi.approveUser(userId);
+      setUsers(users.map(u => 
+        u.id === userId ? { ...u, status: 'ACTIVE' } : u
+      ));
+      alert('사용자가 재활성화되었습니다.');
+    } catch (error) {
+      console.error('User reactivation error:', error);
+      const errorMessage = error instanceof Error ? error.message : '재활성화 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
+    }
+  };
+
+  const handleDelete = async (userId: number) => {
+    if (!window.confirm('정말로 이 사용자를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+      return;
+    }
+    
+    try {
+      await adminApi.deleteUser(userId);
+      setUsers(users.filter(u => u.id !== userId));
+      alert('사용자가 삭제되었습니다.');
+    } catch (error) {
+      console.error('User deletion error:', error);
+      const errorMessage = error instanceof Error ? error.message : '삭제 처리 중 오류가 발생했습니다.';
+      alert(errorMessage);
+    }
+  };
+
   const filteredUsers = users.filter(user => {
     const matchesFilter = filter === 'all' || user.status === filter;
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -352,13 +386,43 @@ const AdminUsers: React.FC = () => {
                               </>
                             )}
                             {user.status === 'ACTIVE' && user.userType !== UserType.ADMIN && (
-                              <button
-                                className="btn btn-outline-warning"
-                                onClick={() => handleSuspend(user.id)}
-                                title="정지"
-                              >
-                                <i className="bi bi-pause-circle"></i>
-                              </button>
+                              <>
+                                <button
+                                  className="btn btn-outline-warning"
+                                  onClick={() => handleSuspend(user.id)}
+                                  title="정지"
+                                >
+                                  <i className="bi bi-pause-circle"></i>
+                                </button>
+                                <button
+                                  className="btn btn-outline-danger"
+                                  onClick={() => handleDelete(user.id)}
+                                  title="삭제"
+                                >
+                                  <i className="bi bi-trash"></i>
+                                </button>
+                              </>
+                            )}
+                            {(user.status === 'SUSPENDED' || user.status === 'REJECTED') && user.userType !== UserType.ADMIN && (
+                              <>
+                                <button
+                                  className="btn btn-outline-success"
+                                  onClick={() => handleReactivate(user.id)}
+                                  title="재활성화"
+                                >
+                                  <i className="bi bi-arrow-clockwise"></i>
+                                </button>
+                                <button
+                                  className="btn btn-outline-danger"
+                                  onClick={() => handleDelete(user.id)}
+                                  title="삭제"
+                                >
+                                  <i className="bi bi-trash"></i>
+                                </button>
+                              </>
+                            )}
+                            {user.userType === UserType.ADMIN && (
+                              <span className="text-muted small">관리자</span>
                             )}
                           </div>
                         </td>
