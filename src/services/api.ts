@@ -10,6 +10,9 @@ const MOCK_POSTS_STORAGE = {
   qna: [] as any[]
 };
 
+// Mock 댓글 저장소 (메모리 기반)
+const MOCK_COMMENTS_STORAGE: { [postId: number]: any[] } = {};
+
 // Mock users for testing
 const MOCK_USERS = {
   'admin@lms.com': {
@@ -794,7 +797,7 @@ export const boardApi = {
         authorId: post.authorId,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
-        comments: [], // Empty comments for mock
+        comments: MOCK_COMMENTS_STORAGE[post.id] || [], // Get comments from storage
         attachments: [] // Empty attachments for mock
       };
     }
@@ -915,7 +918,7 @@ export const boardApi = {
         authorId: post.authorId,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
-        comments: [], // Empty comments for mock
+        comments: MOCK_COMMENTS_STORAGE[post.id] || [], // Get comments from storage
         attachments: [] // Empty attachments for mock
       };
     }
@@ -977,6 +980,77 @@ export const boardApi = {
       return { message: 'Mock: Q&A post deleted successfully' };
     }
     const response = await api.delete<{ message: string }>(`/board/qna/${id}`);
+    return response.data;
+  },
+
+  // 댓글 관련 API
+  createComment: async (postId: number, boardType: string, content: string): Promise<any> => {
+    if (USE_MOCK_API) {
+      const newComment = {
+        id: Date.now(),
+        content: content,
+        authorName: '테스트 사용자',
+        authorId: 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      // 댓글 저장소에 추가
+      if (!MOCK_COMMENTS_STORAGE[postId]) {
+        MOCK_COMMENTS_STORAGE[postId] = [];
+      }
+      MOCK_COMMENTS_STORAGE[postId].push(newComment);
+      
+      // 게시글의 댓글 수 증가
+      const boardStorage = boardType === 'notice' ? MOCK_POSTS_STORAGE.notice : MOCK_POSTS_STORAGE.qna;
+      const post = boardStorage.find(p => p.id === postId);
+      if (post) {
+        post.commentCount = (post.commentCount || 0) + 1;
+      }
+      
+      return newComment;
+    }
+    const response = await api.post(`/board/${boardType}/${postId}/comments`, { content });
+    return response.data;
+  },
+
+  updateComment: async (postId: number, commentId: number, boardType: string, content: string): Promise<any> => {
+    if (USE_MOCK_API) {
+      const comments = MOCK_COMMENTS_STORAGE[postId] || [];
+      const commentIndex = comments.findIndex(c => c.id === commentId);
+      if (commentIndex !== -1) {
+        comments[commentIndex] = {
+          ...comments[commentIndex],
+          content: content,
+          updatedAt: new Date().toISOString()
+        };
+        return comments[commentIndex];
+      }
+      throw { response: { status: 404, data: { message: 'Comment not found' } } };
+    }
+    const response = await api.put(`/board/${boardType}/${postId}/comments/${commentId}`, { content });
+    return response.data;
+  },
+
+  deleteComment: async (postId: number, commentId: number, boardType: string): Promise<{ message: string }> => {
+    if (USE_MOCK_API) {
+      const comments = MOCK_COMMENTS_STORAGE[postId] || [];
+      const commentIndex = comments.findIndex(c => c.id === commentId);
+      if (commentIndex !== -1) {
+        comments.splice(commentIndex, 1);
+        
+        // 게시글의 댓글 수 감소
+        const boardStorage = boardType === 'notice' ? MOCK_POSTS_STORAGE.notice : MOCK_POSTS_STORAGE.qna;
+        const post = boardStorage.find(p => p.id === postId);
+        if (post && post.commentCount > 0) {
+          post.commentCount -= 1;
+        }
+        
+        return { message: 'Comment deleted successfully' };
+      }
+      throw { response: { status: 404, data: { message: 'Comment not found' } } };
+    }
+    const response = await api.delete(`/board/${boardType}/${postId}/comments/${commentId}`);
     return response.data;
   }
 };
